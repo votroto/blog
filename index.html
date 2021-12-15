@@ -1,1 +1,131 @@
-Hello World!
+<!DOCTYPE html>
+<title>Solution Concepts</title>
+<style>
+	body {
+		margin: 0;
+	}
+</style>
+<script type="module">
+	import * as THREE from 'https://cdn.skypack.dev/three'
+	import { OrbitControls } from 'https://cdn.skypack.dev/three/examples/jsm/controls/OrbitControls.js';
+	import { GUI } from 'https://cdn.skypack.dev/three/examples/jsm/libs/lil-gui.module.min.js';
+
+	const params = {
+		'v(1)': 0.1,
+		'v(2)': 0.1,
+		'v(3)': 0.1,
+		'v(12)': 0.4,
+		'v(13)': 0.4,
+		'v(23)': 0.4,
+	}
+
+	function make_scene() {
+		const scene = new THREE.Scene();
+		scene.background = new THREE.Color(0x333344);
+
+		const indv = [
+			new THREE.Plane(new THREE.Vector3(1, 0, 0), -0.1),
+			new THREE.Plane(new THREE.Vector3(0, 1, 0), -0.1),
+			new THREE.Plane(new THREE.Vector3(0, 0, 1), -0.1)
+		];
+		const coal = [
+			new THREE.Plane(new THREE.Vector3(1, 1, 0), -0.2),
+			new THREE.Plane(new THREE.Vector3(1, 0, 1), -0.2),
+			new THREE.Plane(new THREE.Vector3(0, 1, 1), -0.2)
+		];
+
+		const geometry = new THREE.BufferGeometry();
+		const verts = new Float32Array([1, 0, 0, 0, 1, 0, 0, 0, 1]);
+		geometry.setAttribute('position', new THREE.BufferAttribute(verts, 3))
+
+		const material_cor = new THREE.MeshBasicMaterial({ color: "#ffa", opacity: 0.6, clippingPlanes: [...coal, ...indv], transparent: true, side: THREE.DoubleSide });
+		const material_imp = new THREE.MeshBasicMaterial({ color: "#faf", opacity: 0.3, clippingPlanes: indv, transparent: true, side: THREE.DoubleSide });
+		const material_pre = new THREE.MeshBasicMaterial({ color: "#ffa", wireframe: true });
+
+		const mesh_cor = new THREE.Mesh(geometry, material_cor);
+		const mesh_imp = new THREE.Mesh(geometry, material_imp);
+		const mesh_pre = new THREE.Mesh(geometry, material_pre);
+		scene.add(mesh_cor);
+		scene.add(mesh_imp);
+		scene.add(mesh_pre);
+
+		const axesHelper = new THREE.AxesHelper(2);
+		axesHelper.setColors("#aaa", "#aaa", "#aaa")
+		scene.add(axesHelper);
+
+		var dotGeometry = new THREE.BufferGeometry();
+		const dotVerts = new Float32Array([0, 0, 0]);
+		dotGeometry.setAttribute('position', new THREE.BufferAttribute(dotVerts, 3))
+		var dotMaterial = new THREE.PointsMaterial({ color: "#fff", size: 10, sizeAttenuation: false });
+		var dot = new THREE.Points(dotGeometry, dotMaterial);
+		scene.add(dot);
+
+		const shap = () => {
+			const v0 = 0;
+			const v1 = -indv[0].constant;
+			const v2 = -indv[1].constant;
+			const v3 = -indv[2].constant;
+			const v12 = -coal[0].constant * 2;
+			const v13 = -coal[1].constant * 2;
+			const v23 = -coal[2].constant * 2;
+			const vN = 1;
+
+			// 			123			132			213			231			312			321
+			const x1 = v1 - v0 + v1 - v0 + v12 - v2 + vN - v23 + v13 - v3 + vN - v23
+			const x2 = v12 - v1 + vN - v13 + v2 - v0 + v2 - v0 + vN - v13 + v23 - v3
+			const x3 = vN - v12 + v13 - v1 + vN - v12 + v23 - v2 + v3 - v0 + v3 - v0
+
+			dot.position.set(x1 / 6, x2 / 6, x3 / 6);
+		}
+
+
+		const gui = new GUI();
+		gui.add(params, 'v(1)').min(0).max(1).onChange(d => { indv[0].constant = -d; shap(); });
+		gui.add(params, 'v(2)').min(0).max(1).onChange(d => { indv[1].constant = -d; shap(); });
+		gui.add(params, 'v(3)').min(0).max(1).onChange(d => { indv[2].constant = -d; shap(); });
+		gui.add(params, 'v(12)').min(0).max(1).onChange(d => { coal[0].constant = -d * 0.5; shap(); });
+		gui.add(params, 'v(13)').min(0).max(1).onChange(d => { coal[1].constant = -d * 0.5; shap(); });
+		gui.add(params, 'v(23)').min(0).max(1).onChange(d => { coal[2].constant = -d * 0.5; shap(); });
+
+		shap();
+		return scene;
+	}
+
+
+	function make_camera(ratio) {
+		const camera = new THREE.PerspectiveCamera(70, ratio, 0.01, 10);
+		camera.position.set(1, 2, 2);
+
+		return camera;
+	}
+
+	function make_renderer(scene, camera) {
+		const renderer = new THREE.WebGLRenderer();
+		renderer.setPixelRatio(window.devicePixelRatio);
+		renderer.setSize(window.innerWidth, window.innerHeight);
+		renderer.setAnimationLoop(() => { renderer.render(scene, camera) });
+		renderer.localClippingEnabled = true;
+
+		const controls = new OrbitControls(camera, renderer.domElement);
+
+		return renderer;
+	}
+
+	const scene = make_scene();
+	const camera = make_camera(window.innerWidth / window.innerHeight);
+	const renderer = make_renderer(scene, camera);
+
+	document.body.appendChild(renderer.domElement);
+
+
+
+	function onWindowResize() {
+		camera.aspect = window.innerWidth / window.innerHeight;
+		camera.updateProjectionMatrix();
+		renderer.setSize(window.innerWidth, window.innerHeight);
+	}
+
+	window.addEventListener('resize', onWindowResize);
+
+
+</script>
