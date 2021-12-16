@@ -14,9 +14,12 @@
 		'v(1)': 0.1,
 		'v(2)': 0.1,
 		'v(3)': 0.1,
-		'v(12)': 0.4,
-		'v(13)': 0.4,
-		'v(23)': 0.4,
+		'v(12)': 0.5,
+		'v(13)': 0.5,
+		'v(23)': 0.5,
+		'v(N)': 1,
+		'Banzhaf': true,
+		'Shapley': true,
 	}
 
 	function make_scene() {
@@ -29,9 +32,9 @@
 			new THREE.Plane(new THREE.Vector3(0, 0, 1), -0.1)
 		];
 		const coal = [
-			new THREE.Plane(new THREE.Vector3(1, 1, 0), -0.2),
-			new THREE.Plane(new THREE.Vector3(1, 0, 1), -0.2),
-			new THREE.Plane(new THREE.Vector3(0, 1, 1), -0.2)
+			new THREE.Plane(new THREE.Vector3(1, 1, 0), -0.25),
+			new THREE.Plane(new THREE.Vector3(1, 0, 1), -0.25),
+			new THREE.Plane(new THREE.Vector3(0, 1, 1), -0.25)
 		];
 
 		const geometry = new THREE.BufferGeometry();
@@ -57,8 +60,11 @@
 		const dotVerts = new Float32Array([0, 0, 0]);
 		dotGeometry.setAttribute('position', new THREE.BufferAttribute(dotVerts, 3))
 		var dotMaterial = new THREE.PointsMaterial({ color: "#fff", size: 10, sizeAttenuation: false });
-		var dot = new THREE.Points(dotGeometry, dotMaterial);
-		scene.add(dot);
+		var bazMaterial = new THREE.PointsMaterial({ color: "#000", size: 9, sizeAttenuation: false });
+		var sha = new THREE.Points(dotGeometry, dotMaterial);
+		var baz = new THREE.Points(dotGeometry, bazMaterial);
+		scene.add(sha);
+		scene.add(baz);
 
 		const shap = () => {
 			const v0 = 0;
@@ -68,24 +74,36 @@
 			const v12 = -coal[0].constant * 2;
 			const v13 = -coal[1].constant * 2;
 			const v23 = -coal[2].constant * 2;
-			const vN = 1;
+			const vN = mesh_pre.scale.x;
 
 			// 			123			132			213			231			312			321
 			const x1 = v1 - v0 + v1 - v0 + v12 - v2 + vN - v23 + v13 - v3 + vN - v23
 			const x2 = v12 - v1 + vN - v13 + v2 - v0 + v2 - v0 + vN - v13 + v23 - v3
 			const x3 = vN - v12 + v13 - v1 + vN - v12 + v23 - v2 + v3 - v0 + v3 - v0
 
-			dot.position.set(x1 / 6, x2 / 6, x3 / 6);
+			sha.position.set(x1 / 6, x2 / 6, x3 / 6);
+
+			const b1 = vN - v23 + v12 -v2 + v13 - v3 + v1 - v0
+			const b2 = vN - v13 + v12 -v1 + v23 - v3 + v2 - v0
+			const b3 = vN - v12 + v13 -v1 + v23 - v2 + v3 - v0
+
+			const nrm = 4;//b1 + b2 + b3;
+			baz.position.set(b1 / nrm, b2 / nrm, b3 / nrm);
 		}
 
-
 		const gui = new GUI();
-		gui.add(params, 'v(1)').min(0).max(1).onChange(d => { indv[0].constant = -d; shap(); });
-		gui.add(params, 'v(2)').min(0).max(1).onChange(d => { indv[1].constant = -d; shap(); });
-		gui.add(params, 'v(3)').min(0).max(1).onChange(d => { indv[2].constant = -d; shap(); });
-		gui.add(params, 'v(12)').min(0).max(1).onChange(d => { coal[0].constant = -d * 0.5; shap(); });
-		gui.add(params, 'v(13)').min(0).max(1).onChange(d => { coal[1].constant = -d * 0.5; shap(); });
-		gui.add(params, 'v(23)').min(0).max(1).onChange(d => { coal[2].constant = -d * 0.5; shap(); });
+		const vs = gui.addFolder( 'Values' );
+		vs.add(params, 'v(1)').min(0).max(1).onChange(d => { indv[0].constant = -d; shap(); });
+		vs.add(params, 'v(2)').min(0).max(1).onChange(d => { indv[1].constant = -d; shap(); });
+		vs.add(params, 'v(3)').min(0).max(1).onChange(d => { indv[2].constant = -d; shap(); });
+		vs.add(params, 'v(12)').min(0).max(1).onChange(d => { coal[0].constant = -d * 0.5; shap(); });
+		vs.add(params, 'v(13)').min(0).max(1).onChange(d => { coal[1].constant = -d * 0.5; shap(); });
+		vs.add(params, 'v(23)').min(0).max(1).onChange(d => { coal[2].constant = -d * 0.5; shap(); });
+		const total = gui.addFolder( 'Total' );
+		total.add(params, 'v(N)').min(0).max(2).onChange(d => { mesh_cor.scale.set(d,d,d); mesh_pre.scale.set(d,d,d); mesh_imp.scale.set(d,d,d); shap(); });
+		const visibility = gui.addFolder( 'visibility' );
+		visibility.add(params, 'Banzhaf').onChange(d => { baz.visible = d; });
+		visibility.add(params, 'Shapley').onChange(d => { sha.visible = d; });
 
 		shap();
 		return scene;
