@@ -1,25 +1,33 @@
 <!DOCTYPE html>
 <title>Solution Concepts</title>
 <style>
+	.lil-gui{
+		--font-family:monospace;
+	}
+	html {
+		font-family: monospace;
+	}
 	body {
 		margin: 0;
+
 	}
 </style>
+
 <script type="module">
 	import * as THREE from 'https://cdn.skypack.dev/three'
 	import { OrbitControls } from 'https://cdn.skypack.dev/three/examples/jsm/controls/OrbitControls.js';
 	import { GUI } from 'https://cdn.skypack.dev/three/examples/jsm/libs/lil-gui.module.min.js';
 
 	const params = {
-		'v(1)': 0.1,
-		'v(2)': 0.1,
-		'v(3)': 0.1,
-		'v(12)': 0.5,
-		'v(13)': 0.5,
-		'v(23)': 0.5,
+		'v(X)': 0.1,
+		'v(Y)': 0.1,
+		'v(Z)': 0.1,
+		'v(XY)': 0.5,
+		'v(XZ)': 0.5,
+		'v(YZ)': 0.667,
 		'v(N)': 1,
-		'Banzhaf': true,
-		'Shapley': true,
+		'Banzhaf value': true,
+		'Shapley value': true,
 	}
 
 	function make_scene() {
@@ -34,7 +42,7 @@
 		const coal = [
 			new THREE.Plane(new THREE.Vector3(1, 1, 0), -0.25),
 			new THREE.Plane(new THREE.Vector3(1, 0, 1), -0.25),
-			new THREE.Plane(new THREE.Vector3(0, 1, 1), -0.25)
+			new THREE.Plane(new THREE.Vector3(0, 1, 1), -0.667/2)
 		];
 
 		const geometry = new THREE.BufferGeometry();
@@ -42,7 +50,7 @@
 		geometry.setAttribute('position', new THREE.BufferAttribute(verts, 3))
 
 		const material_cor = new THREE.MeshBasicMaterial({ color: "#ffa", opacity: 0.6, clippingPlanes: [...coal, ...indv], transparent: true, side: THREE.DoubleSide });
-		const material_imp = new THREE.MeshBasicMaterial({ color: "#faf", opacity: 0.3, clippingPlanes: indv, transparent: true, side: THREE.DoubleSide });
+		const material_imp = new THREE.MeshBasicMaterial({ color: "#9CB1FF", opacity: 0.3, clippingPlanes: indv, transparent: true, side: THREE.DoubleSide });
 		const material_pre = new THREE.MeshBasicMaterial({ color: "#ffa", wireframe: true });
 
 		const mesh_cor = new THREE.Mesh(geometry, material_cor);
@@ -53,7 +61,7 @@
 		scene.add(mesh_pre);
 
 		const axesHelper = new THREE.AxesHelper(2);
-		axesHelper.setColors("#aaa", "#aaa", "#aaa")
+		axesHelper.setColors('#FF9CB2', '#B1FF9C', '#9CB1FF')
 		scene.add(axesHelper);
 
 		var dotGeometry = new THREE.BufferGeometry();
@@ -91,19 +99,48 @@
 			baz.position.set(b1 / nrm, b2 / nrm, b3 / nrm);
 		}
 
-		const gui = new GUI();
+		const gui = new GUI({touchStyles: true});
+		gui.domElement.classList.add( 'force-touch-styles' );
+		gui.close();
 		const vs = gui.addFolder( 'Values' );
-		vs.add(params, 'v(1)').min(0).max(1).onChange(d => { indv[0].constant = -d; shap(); });
-		vs.add(params, 'v(2)').min(0).max(1).onChange(d => { indv[1].constant = -d; shap(); });
-		vs.add(params, 'v(3)').min(0).max(1).onChange(d => { indv[2].constant = -d; shap(); });
-		vs.add(params, 'v(12)').min(0).max(1).onChange(d => { coal[0].constant = -d * 0.5; shap(); });
-		vs.add(params, 'v(13)').min(0).max(1).onChange(d => { coal[1].constant = -d * 0.5; shap(); });
-		vs.add(params, 'v(23)').min(0).max(1).onChange(d => { coal[2].constant = -d * 0.5; shap(); });
+		vs.add(params, 'v(X)').min(0).max(1).onChange(d => { indv[0].constant = -d; shap(); });
+		vs.add(params, 'v(Y)').min(0).max(1).onChange(d => { indv[1].constant = -d; shap(); });
+		vs.add(params, 'v(Z)').min(0).max(1).onChange(d => { indv[2].constant = -d; shap(); });
+		vs.add(params, 'v(XY)').min(0).max(1).onChange(d => { coal[0].constant = -d * 0.5; shap(); });
+		vs.add(params, 'v(XZ)').min(0).max(1).onChange(d => { coal[1].constant = -d * 0.5; shap(); });
+		vs.add(params, 'v(YZ)').min(0).max(1).onChange(d => { coal[2].constant = -d * 0.5; shap(); });
 		const total = gui.addFolder( 'Total' );
+		total.close();
 		total.add(params, 'v(N)').min(0).max(2).onChange(d => { mesh_cor.scale.set(d,d,d); mesh_pre.scale.set(d,d,d); mesh_imp.scale.set(d,d,d); shap(); });
-		const visibility = gui.addFolder( 'visibility' );
-		visibility.add(params, 'Banzhaf').onChange(d => { baz.visible = d; });
-		visibility.add(params, 'Shapley').onChange(d => { sha.visible = d; });
+		const visibility = gui.addFolder( 'Visibility' );
+		visibility.add(params, 'Banzhaf value').onChange(d => { baz.visible = d; });
+		visibility.add(params, 'Shapley value').onChange(d => { sha.visible = d; });
+
+
+		const xlinverts = new Float32Array([0,0,0, 1,1,0, 0.5,0.5,0, 1,0,0, 0,1,0]);
+		const ylinverts = new Float32Array([0.5,0,0, 0.5,0.5,0,1,1,0, 0.5,0.5,0, 0,1,0]);
+		const zlinverts = new Float32Array([1,0,0, 0,0,0, 1,1,0, 0,1,0]);
+		const xlin  = new THREE.BufferGeometry();
+		const ylin  = new THREE.BufferGeometry();
+		const zlin  = new THREE.BufferGeometry();
+		xlin.setAttribute('position', new THREE.BufferAttribute(xlinverts, 3))
+		ylin.setAttribute('position', new THREE.BufferAttribute(ylinverts, 3))
+		zlin.setAttribute('position', new THREE.BufferAttribute(zlinverts, 3))
+		var xlines = new THREE.Line(xlin, new THREE.LineBasicMaterial({color: '#FF9CB2'}));
+		var ylines = new THREE.Line(ylin, new THREE.LineBasicMaterial({color: '#B1FF9C'}));
+		var zlines = new THREE.Line(zlin, new THREE.LineBasicMaterial({color: '#9CB1FF'}));
+		xlines.position.set(1.05,0.05,0);
+		ylines.position.set(0,1.05,0.15);
+		zlines.position.set(0,0.05,1.15);
+		xlines.rotation.set(0,0,0);
+		ylines.rotation.set(0,Math.PI*2/4,0);
+		zlines.rotation.set(0,Math.PI*2/4,0);
+		xlines.scale.set(0.1, 0.1, 0.1);
+		ylines.scale.set(0.1, 0.1, 0.1);
+		zlines.scale.set(0.1, 0.1, 0.1);
+		scene.add(xlines)
+		scene.add(ylines)
+		scene.add(zlines)
 
 		shap();
 		return scene;
@@ -112,7 +149,7 @@
 
 	function make_camera(ratio) {
 		const camera = new THREE.PerspectiveCamera(70, ratio, 0.01, 10);
-		camera.position.set(1, 2, 2);
+		camera.position.set(2, 1, 1);
 
 		return camera;
 	}
@@ -134,8 +171,6 @@
 	const renderer = make_renderer(scene, camera);
 
 	document.body.appendChild(renderer.domElement);
-
-
 
 	function onWindowResize() {
 		camera.aspect = window.innerWidth / window.innerHeight;

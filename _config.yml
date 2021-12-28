@@ -1,0 +1,12 @@
+title: "votroto"
+description: >-
+ Penzion uprostřed luk, pastvin a polí, blízko lesa, s vlastním rybníkem.
+ Pro milovníky soukromí, klidu a rybaření.
+author:
+  name: Tomáš Votroubek
+lang: "en-US"
+baseurl: ""
+url: "votroto.github.io"
+
+include:
+ - _pages
