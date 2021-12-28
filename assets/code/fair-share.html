@@ -2,7 +2,7 @@
 <title>Solution Concepts</title>
 <style>
 	.lil-gui{
-		--font-family:monospace;
+		--font-family: monospace;
 	}
 	html {
 		font-family: monospace;
@@ -116,9 +116,8 @@
 		visibility.add(params, 'Banzhaf value').onChange(d => { baz.visible = d; });
 		visibility.add(params, 'Shapley value').onChange(d => { sha.visible = d; });
 
-
 		const xlinverts = new Float32Array([0,0,0, 1,1,0, 0.5,0.5,0, 1,0,0, 0,1,0]);
-		const ylinverts = new Float32Array([0.5,0,0, 0.5,0.5,0,1,1,0, 0.5,0.5,0, 0,1,0]);
+		const ylinverts = new Float32Array([0.5,0,0, 0.5,0.5,0, 1,1,0, 0.5,0.5,0, 0,1,0]);
 		const zlinverts = new Float32Array([1,0,0, 0,0,0, 1,1,0, 0,1,0]);
 		const xlin  = new THREE.BufferGeometry();
 		const ylin  = new THREE.BufferGeometry();
@@ -145,7 +144,6 @@
 		shap();
 		return scene;
 	}
-
 
 	function make_camera(ratio) {
 		const camera = new THREE.PerspectiveCamera(70, ratio, 0.01, 10);
@@ -179,6 +177,4 @@
 	}
 
 	window.addEventListener('resize', onWindowResize);
-
-
 </script>
