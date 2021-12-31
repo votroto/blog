@@ -18,6 +18,38 @@
 	import { OrbitControls } from 'https://cdn.skypack.dev/three/examples/jsm/controls/OrbitControls.js';
 	import { GUI } from 'https://cdn.skypack.dev/three/examples/jsm/libs/lil-gui.module.min.js';
 
+const ToonShaderHatching = {
+  uniforms: {
+    uBaseColor: {value: new THREE.Color(0x333344)},
+    uLineColor1: {value: new THREE.Color('#B1FF9C')}
+  },
+  vertexShader: `
+		varying vec3 vNormal;
+		varying vec3 vpos;
+		void main() {
+			gl_Position = projectionMatrix * modelViewMatrix * vec4( position, 1.0 );
+			vNormal = normalize( normalMatrix * normal );
+			vpos=position;
+		}`,
+  fragmentShader: `
+
+		uniform vec3 uBaseColor;
+		uniform vec3 uLineColor1;
+		varying vec3 vNormal;
+		varying vec3 vpos;
+
+		void main() {
+
+			float opa = 1.0-length(vpos);//abs(min(vpos.x,min(vpos.y,vpos.z)));
+			//if ( ( mod(gl_FragCoord.x, 4.001) + mod(gl_FragCoord.y, 4.0) ) > 6.00 ) {
+			if ( mod(gl_FragCoord.x + gl_FragCoord.y, 10.0) == 0.0) {
+				gl_FragColor = vec4( uLineColor1, opa);
+			}
+			else{
+				gl_FragColor = vec4( uBaseColor, opa);
+			}
+		}`
+};
 	const params = {
 		'v(X)': 0.1,
 		'v(Y)': 0.1,
@@ -29,6 +61,19 @@
 		'Banzhaf value': true,
 		'Shapley value': true,
 	}
+
+
+	function createShaderMaterial( shader, light, ambientLight ) {
+		const u = THREE.UniformsUtils.clone( shader.uniforms );
+		const vs = shader.vertexShader;
+		const fs = shader.fragmentShader;
+
+		const material = new THREE.ShaderMaterial( { uniforms: u, vertexShader: vs, fragmentShader: fs , transparent: true, side: THREE.DoubleSide} );
+
+		return material;
+
+	}
+
 
 	function make_scene() {
 		const scene = new THREE.Scene();
@@ -45,24 +90,38 @@
 			new THREE.Plane(new THREE.Vector3(0, 1, 1), -0.667/2)
 		];
 
+		const pgeometry = new THREE.BufferGeometry();
+		const pverts = new Float32Array([2-0.01, -0.5, -0.5,-0.5, 2-0.01, -0.5, -0.5, -0.5, 2-0.01]);
+		pgeometry.setAttribute('position', new THREE.BufferAttribute(pverts, 3))
+
+
 		const geometry = new THREE.BufferGeometry();
-		const verts = new Float32Array([1, 0, 0, 0, 1, 0, 0, 0, 1]);
+		const verts = new Float32Array([1, 0,0,0, 1, 0,0,0, 1]);
 		geometry.setAttribute('position', new THREE.BufferAttribute(verts, 3))
-
-		const material_cor = new THREE.MeshBasicMaterial({ color: "#ffa", opacity: 0.6, clippingPlanes: [...coal, ...indv], transparent: true, side: THREE.DoubleSide });
-		const material_imp = new THREE.MeshBasicMaterial({ color: "#9CB1FF", opacity: 0.3, clippingPlanes: indv, transparent: true, side: THREE.DoubleSide });
-		const material_pre = new THREE.MeshBasicMaterial({ color: "#ffa", wireframe: true });
-
-		const mesh_cor = new THREE.Mesh(geometry, material_cor);
-		const mesh_imp = new THREE.Mesh(geometry, material_imp);
-		const mesh_pre = new THREE.Mesh(geometry, material_pre);
-		scene.add(mesh_cor);
-		scene.add(mesh_imp);
-		scene.add(mesh_pre);
 
 		const axesHelper = new THREE.AxesHelper(2);
 		axesHelper.setColors('#FF9CB2', '#B1FF9C', '#9CB1FF')
 		scene.add(axesHelper);
+
+		const light = new THREE.DirectionalLight( '#f00' );
+		light.position.set( 0.5, 0.5, 1 );
+		scene.add( light );
+		const ambientLight = new THREE.AmbientLight( '#888' );
+		scene.add( ambientLight );
+		const hatchingMaterial = createShaderMaterial( ToonShaderHatching, light, ambientLight );
+
+		const material_cor = new THREE.MeshBasicMaterial({ color: "#ffa", opacity: 0.6, clippingPlanes: [...coal, ...indv], transparent: true, side: THREE.DoubleSide });
+		const material_imp = new THREE.MeshBasicMaterial({ color: "#9CB1FF", opacity: 0.3, clippingPlanes: indv, transparent: true, side: THREE.DoubleSide });
+		const material_pre = new THREE.MeshBasicMaterial({ color: "#B1FF9C", opacity:0.4,transparent:true, wireframe: true });
+
+		const mesh_cor = new THREE.Mesh(geometry, material_cor);
+		const mesh_imp = new THREE.Mesh(geometry, material_imp);
+		const mesh_pre = new THREE.Mesh(pgeometry, hatchingMaterial);
+		const mesh_preglow = new THREE.Mesh(geometry, material_pre);
+		scene.add(mesh_pre);
+		scene.add(mesh_cor);
+		scene.add(mesh_imp);
+		scene.add(mesh_preglow);
 
 		var dotGeometry = new THREE.BufferGeometry();
 		const dotVerts = new Float32Array([0, 0, 0]);
@@ -111,7 +170,7 @@
 		vs.add(params, 'v(YZ)').min(0).max(1).onChange(d => { coal[2].constant = -d * 0.5; shap(); });
 		const total = gui.addFolder( 'Total' );
 		total.close();
-		total.add(params, 'v(N)').min(0).max(2).onChange(d => { mesh_cor.scale.set(d,d,d); mesh_pre.scale.set(d,d,d); mesh_imp.scale.set(d,d,d); shap(); });
+		total.add(params, 'v(N)').min(0).max(2).onChange(d => { mesh_cor.scale.set(d,d,d); mesh_pre.scale.set(d,d,d); mesh_imp.scale.set(d,d,d); mesh_preglow.scale.set(d,d,d); ;shap(); });
 		const visibility = gui.addFolder( 'Visibility' );
 		visibility.add(params, 'Banzhaf value').onChange(d => { baz.visible = d; });
 		visibility.add(params, 'Shapley value').onChange(d => { sha.visible = d; });

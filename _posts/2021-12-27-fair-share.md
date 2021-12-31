@@ -8,7 +8,7 @@ An interactive introduction to fundamental solution concepts in coalitional game
 
 A group of friends has baked a cake, and now they are looking to share it. How should they do that? Let's start with a couple of obvious requirements: *feasibility* -- they can't split more than the entire cake; *efficiency* -- if everyone is happy to switch to a different division, and some players would strictly prefer it, they ought to pick that division instead. In particular, they ought not to throw any of the cake away.
 
-Efficient allocations are our first solution concept called *pre-imputations* (outlined in yellow). But is that enough? What if some of the friends' slices end up being smaller than what they could get by themselves? Such allocations are not *individually-rational*! The group better look for concepts that entice individuals to cooperate, which is exactly what **imputations** are (the whole blue triangle).
+Efficient allocations are our first solution concept called *pre-imputations* (the faint hyperplane hatched in green). But is that enough? What if some of the friends' slices end up being smaller than what they could get by themselves? Such allocations are not *individually-rational*! The group better look for concepts that entice individuals to cooperate, which is exactly what **imputations** are (the whole blue triangle).
 
 Still, imputations are not stable; there may be sub-coalitions which some of the friends would join instead. By strengthening the concept again to only *coalitionaly-rational* allocations, we get a very important set called the **core** (highlighted in beige).
 
