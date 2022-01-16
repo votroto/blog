@@ -1,10 +1,9 @@
 ---
 layout: post
-title: "One's Fair Share"
+title: "Just Deserts"
+subtitle: "An interactive introduction to fundamental solution concepts in coalitional game theory."
+excerpt: "A group of friends has baked a cake, and now they are looking to share it. How should they do that?"
 ---
-
-{: .excerpt}
-An interactive introduction to fundamental solution concepts in coalitional game theory.
 
 A group of friends has baked a cake, and now they are looking to share it. How should they do that? Let's start with a couple of obvious requirements: *feasibility* -- they can't split more than the entire cake; *efficiency* -- if everyone is happy to switch to a different division, and some players would strictly prefer it, they ought to pick that division instead. In particular, they ought not to throw any of the cake away.
 

@@ -2,7 +2,7 @@
 layout: default
 ---
 
-<section id="home">
+<nav id="main-content">
 	{{ content }}
 
 	<ul id="post-list">
@@ -14,11 +14,11 @@ layout: default
 			<a class="post-link" href="{{ post.url | relative_url }}">
 				<div>
 					<h2>{{ post.title | escape }}</h2>
-					{{ post.excerpt }}
+					<p class="excerpt">{{ post.excerpt }}</p>
 					<span class="post-meta">{{ post.date | date: date_format }}</span>
 				</div>
 			</a>
 		</li>
 		{%- endfor -%}
 	</ul>
-</div>
+</nav>
