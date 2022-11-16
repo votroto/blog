@@ -1,36 +1,49 @@
 <!DOCTYPE html>
 <title>Solution Concepts</title>
 <style>
-	.lil-gui{
+	.lil-gui {
 		--font-family: monospace;
 	}
+
 	html {
 		font-family: monospace;
 	}
+
 	body {
 		margin: 0;
 
 	}
 </style>
 
-<script type="module">
-	import * as THREE from 'https://cdn.skypack.dev/three'
-	import { OrbitControls } from 'https://cdn.skypack.dev/three/examples/jsm/controls/OrbitControls.js';
-	import { GUI } from 'https://cdn.skypack.dev/three/examples/jsm/libs/lil-gui.module.min.js';
+<script async src="https://unpkg.com/es-module-shims@1.3.6/dist/es-module-shims.js"></script>
 
-const ToonShaderHatching = {
-  uniforms: {
-    uBaseColor: {value: new THREE.Color(0x333344)},
-    uLineColor: {value: new THREE.Color('#B1FF9C')}
-  },
-  vertexShader: `
+
+<script type="importmap">
+  {
+    "imports": {
+      "three": "https://unpkg.com/three@0.146.0/build/three.module.js"
+    }
+  }
+</script>
+
+<script type="module">
+	import { Color, UniformsUtils, ShaderMaterial, Scene, Vector3, Plane, BufferGeometry, BufferAttribute, MeshBasicMaterial, Mesh, DoubleSide, LineBasicMaterial, PointsMaterial, Points, AxesHelper, Line, PerspectiveCamera, WebGLRenderer} from 'three';
+	import { OrbitControls } from 'https://unpkg.com/three@0.146.0/examples/jsm/controls/OrbitControls.js';
+	import { GUI } from 'https://unpkg.com/three@0.146.0/examples/jsm/libs/lil-gui.module.min.js';
+
+	const ToonShaderHatching = {
+		uniforms: {
+			uBaseColor: { value: new Color(0x333344) },
+			uLineColor: { value: new Color('#B1FF9C') }
+		},
+		vertexShader: `
 		varying vec3 vpos;
 
 		void main() {
 			gl_Position = projectionMatrix * modelViewMatrix * vec4( position, 1.0 );
 			vpos = position;
 		}`,
-  fragmentShader: `
+		fragmentShader: `
 		uniform vec3 uBaseColor;
 		uniform vec3 uLineColor;
 		varying vec3 vpos;
@@ -44,75 +57,75 @@ const ToonShaderHatching = {
 				gl_FragColor = vec4(uBaseColor, 0.);
 			}
 		}`
-};
+	};
 	const params = {
 		'v(X)': 0.1,
 		'v(Y)': 0.1,
 		'v(Z)': 0.1,
 		'v(XY)': 0.5,
 		'v(XZ)': 0.5,
-		'v(YZ)': 2/3,
+		'v(YZ)': 2 / 3,
 		'v(N)': 1,
 		'Banzhaf value': true,
 		'Shapley value': true,
 	}
 
-	function createShaderMaterial( shader ) {
-		const u = THREE.UniformsUtils.clone( shader.uniforms );
+	function createShaderMaterial(shader) {
+		const u = UniformsUtils.clone(shader.uniforms);
 		const vs = shader.vertexShader;
 		const fs = shader.fragmentShader;
 
-		const material = new THREE.ShaderMaterial( { uniforms: u, vertexShader: vs, fragmentShader: fs , transparent: true, side: THREE.DoubleSide} );
+		const material = new ShaderMaterial({ uniforms: u, vertexShader: vs, fragmentShader: fs, transparent: true, side: DoubleSide });
 
 		return material;
 	}
 
 	function make_scene() {
-		const scene = new THREE.Scene();
-		scene.background = new THREE.Color(0x333344);
+		const scene = new Scene();
+		scene.background = new Color(0x333344);
 
 		const indv = [
-			new THREE.Plane(new THREE.Vector3(1, 0, 0), -0.1),
-			new THREE.Plane(new THREE.Vector3(0, 1, 0), -0.1),
-			new THREE.Plane(new THREE.Vector3(0, 0, 1), -0.1)
+			new Plane(new Vector3(1, 0, 0), -0.1),
+			new Plane(new Vector3(0, 1, 0), -0.1),
+			new Plane(new Vector3(0, 0, 1), -0.1)
 		];
 		const coal = [
-			new THREE.Plane(new THREE.Vector3(0.5, 0.5, 0), -0.5),
-			new THREE.Plane(new THREE.Vector3(0.5, 0, 0.5), -0.5),
-			new THREE.Plane(new THREE.Vector3(0, 0.5, 0.5), -2/3)
+			new Plane(new Vector3(0.5, 0.5, 0), -0.5),
+			new Plane(new Vector3(0.5, 0, 0.5), -0.5),
+			new Plane(new Vector3(0, 0.5, 0.5), -2 / 3)
 		];
 
-		const pgeometry = new THREE.BufferGeometry();
-		const pverts = new Float32Array([2-0.01, -0.5, -0.5,-0.5, 2-0.01, -0.5, -0.5, -0.5, 2-0.01]);
-		pgeometry.setAttribute('position', new THREE.BufferAttribute(pverts, 3))
+		const pgeometry = new BufferGeometry();
+		const pverts = new Float32Array([2 - 0.01, -0.5, -0.5, -0.5, 2 - 0.01, -0.5, -0.5, -0.5, 2 - 0.01]);
+		pgeometry.setAttribute('position', new BufferAttribute(pverts, 3))
 
 
-		const geometry = new THREE.BufferGeometry();
-		const verts = new Float32Array([1, 0,0,0, 1, 0,0,0, 1]);
-		geometry.setAttribute('position', new THREE.BufferAttribute(verts, 3))
+		const geometry = new BufferGeometry();
+		const verts = new Float32Array([1, 0, 0, 0, 1, 0, 0, 0, 1]);
+		geometry.setAttribute('position', new BufferAttribute(verts, 3))
 
-		const hatchingMaterial = createShaderMaterial( ToonShaderHatching );
+		const hatchingMaterial = createShaderMaterial(ToonShaderHatching);
 
-		const material_cor = new THREE.MeshBasicMaterial({ color: "#ffa", opacity: 0.6, clippingPlanes: [...coal, ...indv], transparent: true, side: THREE.DoubleSide });
-		const material_imp = new THREE.MeshBasicMaterial({ color: "#9CB1FF", opacity: 0.3, clippingPlanes: indv, transparent: true, side: THREE.DoubleSide });
-		const material_pre = new THREE.MeshBasicMaterial({ color: "#B1FF9C", opacity: 0.4, transparent:true, wireframe: true });
+		const material_cor = new MeshBasicMaterial({ color: "#ffa", opacity: 0.6, clippingPlanes: [...coal, ...indv], transparent: true, side: DoubleSide });
+		const material_imp = new MeshBasicMaterial({ color: "#9CB1FF", opacity: 0.3, clippingPlanes: indv, transparent: true, side: DoubleSide });
+		const material_pre = new MeshBasicMaterial({ color: "#B1FF9C", opacity: 0.4, transparent: true, wireframe: true });
 
-		const mesh_cor = new THREE.Mesh(geometry, material_cor);
-		const mesh_imp = new THREE.Mesh(geometry, material_imp);
-		const mesh_pre = new THREE.Mesh(pgeometry, hatchingMaterial);
-		const mesh_preglow = new THREE.Mesh(geometry, material_pre);
+		const mesh_cor = new Mesh(geometry, material_cor);
+		const mesh_imp = new Mesh(geometry, material_imp);
+		const mesh_pre = new Mesh(pgeometry, hatchingMaterial);
+		const mesh_preglow = new Mesh(geometry, material_pre);
 		scene.add(mesh_pre);
 		scene.add(mesh_cor);
 		scene.add(mesh_imp);
 		scene.add(mesh_preglow);
 
-		var dotGeometry = new THREE.BufferGeometry();
+		var dotGeometry = new BufferGeometry();
 		const dotVerts = new Float32Array([0, 0, 0]);
-		dotGeometry.setAttribute('position', new THREE.BufferAttribute(dotVerts, 3))
-		var dotMaterial = new THREE.PointsMaterial({ color: "#fff", size: 10, sizeAttenuation: false });
-		var bazMaterial = new THREE.PointsMaterial({ color: "#000", size: 9, sizeAttenuation: false });
-		var sha = new THREE.Points(dotGeometry, dotMaterial);
-		var baz = new THREE.Points(dotGeometry, bazMaterial);
+		dotGeometry.setAttribute('position', new BufferAttribute(dotVerts, 3))
+		var dotMaterial = new PointsMaterial({ color: "#fff", size: 10, sizeAttenuation: false });
+		var bazMaterial = new PointsMaterial({ color: "#000", size: 9, sizeAttenuation: false });
+		var sha = new Points(dotGeometry, dotMaterial);
+		var baz = new Points(dotGeometry, bazMaterial);
 		scene.add(sha);
 		scene.add(baz);
 
@@ -125,9 +138,9 @@ const ToonShaderHatching = {
 			const v23 = -coal[2].constant;
 			const vN = mesh_pre.scale.x;
 
-			const x1 = +2*v1 - v2 - v3 + v12 + v13 - 2*v23 + 2*vN
-			const x2 = -v1 + 2*v2 - v3 + v12 - 2*v13 + v23 + 2*vN
-			const x3 = -v1 - v2 + 2*v3 - 2*v12 + v13 + v23 + 2*vN
+			const x1 = +2 * v1 - v2 - v3 + v12 + v13 - 2 * v23 + 2 * vN
+			const x2 = -v1 + 2 * v2 - v3 + v12 - 2 * v13 + v23 + 2 * vN
+			const x3 = -v1 - v2 + 2 * v3 - 2 * v12 + v13 + v23 + 2 * vN
 
 			sha.position.set(x1 / 6, x2 / 6, x3 / 6);
 
@@ -138,48 +151,45 @@ const ToonShaderHatching = {
 			baz.position.set(b1 / 4, b2 / 4, b3 / 4);
 		}
 
-		const gui = new GUI({touchStyles: true});
+		const gui = new GUI({ touchStyles: true });
+		const folder_ext = gui.addFolder('Extra');
 
-		const folder_val = gui.addFolder( 'Values' );
-		const folder_tot = gui.addFolder( 'Total' );
-		const folder_vis = gui.addFolder( 'Visibility' );
+		gui.add(params, 'v(X)').min(0).max(1).onChange(d => { indv[0].constant = -d; shap(); });
+		gui.add(params, 'v(Y)').min(0).max(1).onChange(d => { indv[1].constant = -d; shap(); });
+		gui.add(params, 'v(Z)').min(0).max(1).onChange(d => { indv[2].constant = -d; shap(); });
+		gui.add(params, 'v(XY)').min(0).max(1).onChange(d => { coal[0].constant = -d; shap(); });
+		gui.add(params, 'v(XZ)').min(0).max(1).onChange(d => { coal[1].constant = -d; shap(); });
+		gui.add(params, 'v(YZ)').min(0).max(1).onChange(d => { coal[2].constant = -d; shap(); });
+		folder_ext.add(params, 'v(N)').min(0).max(2).onChange(d => { mesh_cor.scale.set(d, d, d); mesh_pre.scale.set(d, d, d); mesh_imp.scale.set(d, d, d); mesh_preglow.scale.set(d, d, d); shap(); });
+		folder_ext.add(params, 'Banzhaf value').onChange(d => { baz.visible = d; });
+		folder_ext.add(params, 'Shapley value').onChange(d => { sha.visible = d; });
 
-		folder_val.add(params, 'v(X)').min(0).max(1).onChange(d => { indv[0].constant = -d; shap(); });
-		folder_val.add(params, 'v(Y)').min(0).max(1).onChange(d => { indv[1].constant = -d; shap(); });
-		folder_val.add(params, 'v(Z)').min(0).max(1).onChange(d => { indv[2].constant = -d; shap(); });
-		folder_val.add(params, 'v(XY)').min(0).max(1).onChange(d => { coal[0].constant = -d; shap(); });
-		folder_val.add(params, 'v(XZ)').min(0).max(1).onChange(d => { coal[1].constant = -d; shap(); });
-		folder_tot.add(params, 'v(N)').min(0).max(2).onChange(d => { mesh_cor.scale.set(d,d,d); mesh_pre.scale.set(d,d,d); mesh_imp.scale.set(d,d,d); mesh_preglow.scale.set(d,d,d); shap(); });
-		folder_val.add(params, 'v(YZ)').min(0).max(1).onChange(d => { coal[2].constant = -d; shap(); });
-		folder_vis.add(params, 'Banzhaf value').onChange(d => { baz.visible = d; });
-		folder_vis.add(params, 'Shapley value').onChange(d => { sha.visible = d; });
-
-		gui.domElement.classList.add( 'force-touch-styles' );
-		folder_tot.close();
+		gui.domElement.classList.add('force-touch-styles');
+		folder_ext.close();
 		gui.close();
 
-		const axesHelper = new THREE.AxesHelper(2);
+		const axesHelper = new AxesHelper(2);
 		axesHelper.setColors('#FF9CB2', '#B1FF9C', '#9CB1FF')
 		scene.add(axesHelper);
 
-		const xlinverts = new Float32Array([0,0,0, 1,1,0, 0.5,0.5,0, 1,0,0, 0,1,0]);
-		const ylinverts = new Float32Array([0.5,0,0, 0.5,0.5,0, 1,1,0, 0.5,0.5,0, 0,1,0]);
-		const zlinverts = new Float32Array([1,0,0, 0,0,0, 1,1,0, 0,1,0]);
-		const xlin  = new THREE.BufferGeometry();
-		const ylin  = new THREE.BufferGeometry();
-		const zlin  = new THREE.BufferGeometry();
-		xlin.setAttribute('position', new THREE.BufferAttribute(xlinverts, 3))
-		ylin.setAttribute('position', new THREE.BufferAttribute(ylinverts, 3))
-		zlin.setAttribute('position', new THREE.BufferAttribute(zlinverts, 3))
-		var xlines = new THREE.Line(xlin, new THREE.LineBasicMaterial({color: '#FF9CB2'}));
-		var ylines = new THREE.Line(ylin, new THREE.LineBasicMaterial({color: '#B1FF9C'}));
-		var zlines = new THREE.Line(zlin, new THREE.LineBasicMaterial({color: '#9CB1FF'}));
-		xlines.position.set(1.05,0.05,0);
-		ylines.position.set(0,1.05,0.15);
-		zlines.position.set(0,0.05,1.15);
-		xlines.rotation.set(0,0,0);
-		ylines.rotation.set(0,Math.PI/2,0);
-		zlines.rotation.set(0,Math.PI/2,0);
+		const xlinverts = new Float32Array([0, 0, 0, 1, 1, 0, 0.5, 0.5, 0, 1, 0, 0, 0, 1, 0]);
+		const ylinverts = new Float32Array([0.5, 0, 0, 0.5, 0.5, 0, 1, 1, 0, 0.5, 0.5, 0, 0, 1, 0]);
+		const zlinverts = new Float32Array([1, 0, 0, 0, 0, 0, 1, 1, 0, 0, 1, 0]);
+		const xlin = new BufferGeometry();
+		const ylin = new BufferGeometry();
+		const zlin = new BufferGeometry();
+		xlin.setAttribute('position', new BufferAttribute(xlinverts, 3))
+		ylin.setAttribute('position', new BufferAttribute(ylinverts, 3))
+		zlin.setAttribute('position', new BufferAttribute(zlinverts, 3))
+		var xlines = new Line(xlin, new LineBasicMaterial({ color: '#FF9CB2' }));
+		var ylines = new Line(ylin, new LineBasicMaterial({ color: '#B1FF9C' }));
+		var zlines = new Line(zlin, new LineBasicMaterial({ color: '#9CB1FF' }));
+		xlines.position.set(1.05, 0.05, 0);
+		ylines.position.set(0, 1.05, 0.15);
+		zlines.position.set(0, 0.05, 1.15);
+		xlines.rotation.set(0, 0, 0);
+		ylines.rotation.set(0, Math.PI / 2, 0);
+		zlines.rotation.set(0, Math.PI / 2, 0);
 		xlines.scale.set(0.1, 0.1, 0.1);
 		ylines.scale.set(0.1, 0.1, 0.1);
 		zlines.scale.set(0.1, 0.1, 0.1);
@@ -192,14 +202,14 @@ const ToonShaderHatching = {
 	}
 
 	function make_camera(ratio) {
-		const camera = new THREE.PerspectiveCamera(70, ratio, 0.01, 10);
+		const camera = new PerspectiveCamera(70, ratio, 0.01, 10);
 		camera.position.set(2, 1, 1);
 
 		return camera;
 	}
 
 	function make_renderer(scene, camera) {
-		const renderer = new THREE.WebGLRenderer( { antialias: true } );
+		const renderer = new WebGLRenderer({ antialias: true });
 		renderer.setPixelRatio(window.devicePixelRatio);
 		renderer.setSize(window.innerWidth, window.innerHeight);
 		renderer.setAnimationLoop(() => { renderer.render(scene, camera) });

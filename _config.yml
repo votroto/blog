@@ -1,7 +1,6 @@
 title: "votroto"
 author:
   name: Tomáš Votroubek
-baseurl: ""
 url: "votroto.github.io"
 
 include:
