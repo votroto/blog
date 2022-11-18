@@ -15,6 +15,6 @@ Still, imputations are not stable; there may be sub-coalitions which some of the
 
 But the core is the entire beige polygon. Clearly, some of those allocations favor some of the friends unfairly. If fairness is what the group is after, they should try the **Shapley value** (drawn as a unique white point). Intuitively, fair allocations should be in the middle of the core --- and for convex games, that is precisely where the Shapley value is.
 
-There are many other solution concepts: if instead of stability or fairness you're worried how much anyone would complain, there is the **Nucleolus**; if a fair division of voting power is your goal, have a look at the *Banzhaf index* (if you generalize that, you get the *Banzhaf value*). Some of the concepts above may not have a solution in every game, but the *least-core* and the *pre-nucleolus* will. The list does not end there.
+There are many other solution concepts: if instead of stability or fairness you're worried how much anyone would complain, there is the **nucleolus**; if a fair division of voting power is your goal, have a look at the *Banzhaf index* (if you generalize that, you get the *Banzhaf value*). Some of the concepts above may not have a solution in every game, but the *least-core* and the *pre-nucleolus* will. The list does not end there.
 
 Play around with the controls above and see how the concepts are related to one another.

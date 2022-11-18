@@ -27,7 +27,7 @@
 </script>
 
 <script type="module">
-	import { Color, UniformsUtils, ShaderMaterial, Scene, Vector3, Plane, BufferGeometry, BufferAttribute, MeshBasicMaterial, Mesh, DoubleSide, LineBasicMaterial, PointsMaterial, Points, AxesHelper, Line, PerspectiveCamera, WebGLRenderer} from 'three';
+	import { Color, UniformsUtils, ShaderMaterial, Scene, Vector3, Plane, BufferGeometry, BufferAttribute, MeshBasicMaterial, Mesh, DoubleSide, LineBasicMaterial, PointsMaterial, Points, AxesHelper, Line, PerspectiveCamera, WebGLRenderer } from 'three';
 	import { OrbitControls } from 'https://unpkg.com/three@0.146.0/examples/jsm/controls/OrbitControls.js';
 	import { GUI } from 'https://unpkg.com/three@0.146.0/examples/jsm/libs/lil-gui.module.min.js';
 
@@ -106,7 +106,7 @@
 
 		const hatchingMaterial = createShaderMaterial(ToonShaderHatching);
 
-		const material_cor = new MeshBasicMaterial({ color: "#ffa", opacity: 0.6, clippingPlanes: [...coal, ...indv], transparent: true, side: DoubleSide });
+		let material_cor = new MeshBasicMaterial({ color: "#ffa", opacity: 0.6, clippingPlanes: [...coal, ...indv], transparent: true, side: DoubleSide });
 		const material_imp = new MeshBasicMaterial({ color: "#9CB1FF", opacity: 0.3, clippingPlanes: indv, transparent: true, side: DoubleSide });
 		const material_pre = new MeshBasicMaterial({ color: "#B1FF9C", opacity: 0.4, transparent: true, wireframe: true });
 
@@ -129,6 +129,27 @@
 		scene.add(sha);
 		scene.add(baz);
 
+
+
+
+		const mlinverts = new Float32Array([0, 0, 0, 0, 1, 0, 0.5, 0.5, 0, 1, 1, 0, 1, 0, 0]);
+		const mlin = new BufferGeometry();
+		mlin.setAttribute('position', new BufferAttribute(mlinverts, 3))
+		var mlines = new Line(mlin, new LineBasicMaterial({ color: '#fff' }));
+		mlines.position.set(0, 1.05, 0.35);
+		mlines.rotation.set(0, Math.PI / 2, 0);
+		mlines.scale.set(0.1, 0.1, 0.1);
+		scene.add(mlines)
+
+		const alinverts = new Float32Array([0, 0, 0, 0.5, 1, 0, 1, 0, 0, 0.75, 0.5, 0, 0.25, 0.5, 0]);
+		const alin = new BufferGeometry();
+		alin.setAttribute('position', new BufferAttribute(alinverts, 3))
+		var alines = new Line(alin, new LineBasicMaterial({ color: '#fff' }));
+		alines.position.set(0, 1.05, 0.35);
+		alines.rotation.set(0, Math.PI / 2, 0);
+		alines.scale.set(0.1, 0.1, 0.1);
+		scene.add(alines)
+
 		const shap = () => {
 			const v1 = -indv[0].constant;
 			const v2 = -indv[1].constant;
@@ -149,6 +170,30 @@
 			const b3 = vN - v12 + v13 - v1 + v23 - v2 + v3
 
 			baz.position.set(b1 / 4, b2 / 4, b3 / 4);
+
+			if (
+				v1 + v2 <= v12 &&
+				v1 + v3 <= v13 &&
+				v2 + v3 <= v23 &&
+				v12 + v3 <= vN &&
+				v13 + v2 <= vN &&
+				v23 + v1 <= vN) {
+				if (
+					v12 + v23 <= vN + v2 &&
+					v13 + v23 <= vN + v3 &&
+					v13 + v12 <= vN + v1) {
+					mlines.visible = true;
+					alines.visible = false;
+				}
+				else {
+					mlines.visible = false;
+					alines.visible = true;
+				}
+			}
+			else {
+				mlines.visible = false;
+				alines.visible = false;
+			}
 		}
 
 		const gui = new GUI({ touchStyles: true });
@@ -171,6 +216,7 @@
 		const axesHelper = new AxesHelper(2);
 		axesHelper.setColors('#FF9CB2', '#B1FF9C', '#9CB1FF')
 		scene.add(axesHelper);
+
 
 		const xlinverts = new Float32Array([0, 0, 0, 1, 1, 0, 0.5, 0.5, 0, 1, 0, 0, 0, 1, 0]);
 		const ylinverts = new Float32Array([0.5, 0, 0, 0.5, 0.5, 0, 1, 1, 0, 0.5, 0.5, 0, 0, 1, 0]);
