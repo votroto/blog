@@ -1,0 +1,464 @@
+<!DOCTYPE html>
+<title>Solution Concepts</title>
+<style>
+	.lil-gui {
+		--font-family: monospace;
+	}
+
+	html {
+		font-family: monospace;
+	}
+
+	body {
+		margin: 0;
+
+	}
+</style>
+
+<script type="importmap">
+	{
+		"imports": {
+			"three": "https://cdn.jsdelivr.net/npm/three@0.171.0/build/three.module.js",
+			"three/addons/": "https://cdn.jsdelivr.net/npm/three@0.171.0/examples/jsm/"
+		}
+	}
+</script>
+
+<script type="module">
+	import * as THREE from 'three';
+	import { OrbitControls } from 'three/addons/controls/OrbitControls.js';
+	import { GUI } from 'three/addons/libs/lil-gui.module.min.js';
+
+
+	function gammaRand() {
+		const d = 1 - 1 / 3;
+		const c = 1 / Math.sqrt(9 * d);
+		while (true) {
+			let x, v;
+			do {
+				x = Math.random() * 2 - 1;
+				v = Math.random();
+			} while (x * x + v >= 1);
+			const u = Math.random();
+			const z = x / v;
+			const w = d * Math.pow(1 + c * z, 3);
+			if (w > 0 && u < 1 - 0.0331 * z * z * z * z || u < Math.exp(-0.5 * z * z)) {
+				return w;
+			}
+		}
+	}
+
+	function generate_dirichlet(n) {
+		var sum = 0;
+		const vector = [];
+		for (let i = 0; i < n; i++) {
+			const r = gammaRand();
+			vector.push(r);
+			sum += r;
+		}
+		for (let i = 0; i < n; i++) {
+			vector[i] = vector[i] / sum;
+		}
+		return vector;
+	}
+
+
+	function to_trap(p0, p1, p2, p3) {
+		const x = p0 + p1 - p2 - p3;
+		const y = p0 - p1 + p2 - p3;
+		const z = p0 - p1 - p2 + p3;
+		return new THREE.Vector3(x, y, z);
+	}
+
+	const vals = {
+		'v(X)': 0,
+		'v(Y)': 0,
+		'v(Z)': 0,
+		'v(W)': 0,
+		'v(XY)': 0.1,
+		'v(XZ)': 0.1,
+		'v(XW)': 0.1,
+		'v(YZ)': 0.1,
+		'v(YW)': 0.1,
+		'v(ZW)': 0,
+		'v(YZW)': 0.2,
+		'v(XZW)': 0.3,
+		'v(XYW)': 0.3,
+		'v(XYZ)': 0.4,
+	}
+
+
+	function createPlaneStencilGroup(geometry, plane, renderOrder) {
+
+		const group = new THREE.Group();
+		const baseMat = new THREE.MeshBasicMaterial();
+		baseMat.depthWrite = false;
+		baseMat.depthTest = false;
+		baseMat.colorWrite = false;
+		baseMat.stencilWrite = true;
+		baseMat.stencilFunc = THREE.AlwaysStencilFunc;
+
+		// back faces
+		const mat0 = baseMat.clone();
+		mat0.side = THREE.BackSide;
+		mat0.clippingPlanes = [plane];
+		mat0.stencilFail = THREE.IncrementWrapStencilOp;
+		mat0.stencilZFail = THREE.IncrementWrapStencilOp;
+		mat0.stencilZPass = THREE.IncrementWrapStencilOp;
+
+		const mesh0 = new THREE.Mesh(geometry, mat0);
+		mesh0.renderOrder = renderOrder;
+		group.add(mesh0);
+
+		// front faces
+		const mat1 = baseMat.clone();
+		mat1.side = THREE.FrontSide;
+		mat1.clippingPlanes = [plane];
+		mat1.stencilFail = THREE.DecrementWrapStencilOp;
+		mat1.stencilZFail = THREE.DecrementWrapStencilOp;
+		mat1.stencilZPass = THREE.DecrementWrapStencilOp;
+
+		const mesh1 = new THREE.Mesh(geometry, mat1);
+		mesh1.renderOrder = renderOrder;
+
+		group.add(mesh1);
+
+		return group;
+
+	}
+	function make_scene() {
+		const scene = new THREE.Scene();
+		//scene.background = new THREE.Color("#343434");
+
+		scene.background = new THREE.Color(0x333344);
+
+
+
+
+		const dirLight1 = new THREE.DirectionalLight('#d7191c', 2);
+		const dirLight2 = new THREE.DirectionalLight('#abdda4', 2);
+		const dirLight3 = new THREE.DirectionalLight('#2b83ba', 3);
+		const dirLight4 = new THREE.DirectionalLight('#fdae61', 2);
+		dirLight1.position.set(+2, +2, +2);
+		dirLight2.position.set(+2, -2, -2);
+		dirLight3.position.set(-2, +2, -2);
+		dirLight4.position.set(-2, -2, +2);
+		scene.add(dirLight1);
+		scene.add(dirLight2);
+		scene.add(dirLight3);
+		scene.add(dirLight4);
+
+		/*
+				const dirLight1 = new THREE.DirectionalLight("#ffeeee", 2);
+				dirLight1.position.set(5, 10, 7.5);
+				scene.add(dirLight1);
+
+
+				const dirLight = new THREE.DirectionalLight("#eeeeff", 3);
+				dirLight.position.set(-6, -11, 8);
+				scene.add(dirLight);
+
+		*/
+
+		const geometry0 = new THREE.BufferGeometry();
+		const vertices = new Float32Array([1, 1, 1, 1, -1, -1, -1, 1, -1, -1, -1, 1]);
+		const indices = [0, 1, 2, 0, 2, 3, 1, 3, 2, 0, 3, 1];
+		geometry0.setIndex(indices);
+		geometry0.setAttribute('position', new THREE.BufferAttribute(vertices, 3));
+		const geometry = geometry0.toNonIndexed();
+		geometry.computeVertexNormals();
+
+
+
+		var geo = new THREE.EdgesGeometry(geometry);
+		var wiremat = new THREE.LineBasicMaterial({ color: 0xffffff, linewidth: 3 });
+		var wireframe = new THREE.LineSegments(geo, wiremat);
+		scene.add(wireframe);
+
+		var object = new THREE.Group();
+		scene.add(object);
+
+		const planeGeom = new THREE.PlaneGeometry(4, 4);
+
+
+
+		const planeObjects = [];
+		const planes = [
+			new THREE.Plane((new THREE.Vector3(+1, +1, +1)).normalize(), 1),
+			new THREE.Plane((new THREE.Vector3(+1, -1, -1)).normalize(), 1),
+			new THREE.Plane((new THREE.Vector3(-1, +1, -1)).normalize(), 1),
+			new THREE.Plane((new THREE.Vector3(-1, -1, +1)).normalize(), 1),
+
+			new THREE.Plane((new THREE.Vector3(+2, +0, +0)).normalize(), 10),
+			new THREE.Plane((new THREE.Vector3(+0, +2, +0)).normalize(), 10),
+			new THREE.Plane((new THREE.Vector3(-0, +0, +2)).normalize(), 10),
+			new THREE.Plane((new THREE.Vector3(-0, -0, -2)).normalize(), 10),
+			new THREE.Plane((new THREE.Vector3(-0, -2, +0)).normalize(), 10),
+			new THREE.Plane((new THREE.Vector3(-2, +0, -0)).normalize(), 10),
+			//
+			//
+			new THREE.Plane((new THREE.Vector3(-1, -1, -1)).normalize(), -10),
+			new THREE.Plane((new THREE.Vector3(-1, +1, +1)).normalize(), -10),
+			new THREE.Plane((new THREE.Vector3(+1, -1, +1)).normalize(), -10),
+			new THREE.Plane((new THREE.Vector3(+1, +1, -1)).normalize(), -10),
+		];
+		for (let i = 0; i < planes.length; i++) {
+
+			const poGroup = new THREE.Group();
+			const plane = planes[i];
+			const stencilGroup = createPlaneStencilGroup(geometry, plane, i + 1);
+
+			const planeMat =
+				new THREE.MeshStandardMaterial({
+					color: "#fdae61",
+					//color: "#eeeeee",
+					clippingPlanes: planes.filter(p => p !== plane),
+					side: THREE.DoubleSide,
+					stencilWrite: true,
+					stencilRef: 0,
+					stencilFunc: THREE.NotEqualStencilFunc,
+					stencilFail: THREE.ReplaceStencilOp,
+					stencilZFail: THREE.ReplaceStencilOp,
+					stencilZPass: THREE.ReplaceStencilOp,
+
+				});
+			const po = new THREE.Mesh(planeGeom, planeMat);
+			po.onAfterRender = function (renderer) {
+
+				renderer.clearStencil();
+
+			};
+
+			po.renderOrder = i + 1.1;
+
+			object.add(stencilGroup);
+			poGroup.add(po);
+			planeObjects.push(po);
+			scene.add(poGroup);
+
+
+
+
+
+		}
+
+		const material = new THREE.MeshBasicMaterial({
+
+			color: "#fdae61",
+			opacity: 0.6,
+			transparent: true,
+			clippingPlanes: planes,
+			side: THREE.DoubleSide,
+
+		});
+
+		// add the color
+		const clippedColorFront = new THREE.Mesh(geometry, material);
+		clippedColorFront.renderOrder = 16;
+		object.add(clippedColorFront);
+
+
+
+
+		const verts_ax = new Float32Array([0, 0, 0, +1.5, +1.5, +1.5]);
+		const verts_ay = new Float32Array([0, 0, 0, +1.5, -1.5, -1.5]);
+		const verts_az = new Float32Array([0, 0, 0, -1.5, +1.5, -1.5]);
+		const verts_aw = new Float32Array([0, 0, 0, -1.5, -1.5, +1.5]);
+		const buff_ax = new THREE.BufferGeometry();
+		const buff_ay = new THREE.BufferGeometry();
+		const buff_az = new THREE.BufferGeometry();
+		const buff_aw = new THREE.BufferGeometry();
+		buff_ax.setAttribute('position', new THREE.BufferAttribute(verts_ax, 3))
+		buff_ay.setAttribute('position', new THREE.BufferAttribute(verts_ay, 3))
+		buff_az.setAttribute('position', new THREE.BufferAttribute(verts_az, 3))
+		buff_aw.setAttribute('position', new THREE.BufferAttribute(verts_aw, 3))
+		var lines_ax = new THREE.Line(buff_ax, new THREE.LineBasicMaterial({ color: '#d7191c' }));
+		var lines_ay = new THREE.Line(buff_ay, new THREE.LineBasicMaterial({ color: '#abdda4' }));
+		var lines_az = new THREE.Line(buff_az, new THREE.LineBasicMaterial({ color: '#2b83ba' }));
+		var lines_aw = new THREE.Line(buff_aw, new THREE.LineBasicMaterial({ color: '#fdae61' }));
+		scene.add(lines_ax)
+		scene.add(lines_ay)
+		scene.add(lines_az)
+		scene.add(lines_aw)
+
+
+		var dotGeometry = new THREE.BufferGeometry();
+		const dotVerts = new Float32Array([0, 0, 0]);
+		dotGeometry.setAttribute('position', new THREE.BufferAttribute(dotVerts, 3))
+		var dotMaterial = new THREE.PointsMaterial({ color: "#fff", size: 10, sizeAttenuation: false });
+		var sha = new THREE.Points(dotGeometry, dotMaterial);
+		scene.add(sha);
+
+		var dotMaterial = new THREE.PointsMaterial({ color: "#000", size: 10, sizeAttenuation: false });
+		var ban = new THREE.Points(dotGeometry, dotMaterial);
+		scene.add(ban);
+
+
+		const st = Math.sqrt(3) - 0.00001;
+
+		function cores() {
+			planes[0].constant = -((1 / st + st) * vals['v(X)'] - (1 / st));
+			planes[1].constant = -((1 / st + st) * vals['v(Y)'] - (1 / st));
+			planes[2].constant = -((1 / st + st) * vals['v(Z)'] - (1 / st));
+			planes[3].constant = -((1 / st + st) * vals['v(W)'] - (1 / st));
+
+			planes[4].constant = (1 - 2 * vals['v(XY)']);
+			planes[5].constant = (1 - 2 * vals['v(XZ)']);
+			planes[6].constant = 1 - 2 * vals['v(XW)'];
+			planes[7].constant = 1 - 2 * vals['v(YZ)'];
+			planes[8].constant = 1 - 2 * vals['v(YW)'];
+			planes[9].constant = 1 - 2 * vals['v(ZW)'];
+
+			planes[10].constant = ((1 / st + st) * (1 - vals['v(YZW)']) - (1 / st));
+			planes[11].constant = ((1 / st + st) * (1 - vals['v(XZW)']) - (1 / st));
+			planes[12].constant = ((1 / st + st) * (1 - vals['v(XYW)']) - (1 / st));
+			planes[13].constant = ((1 / st + st) * (1 - vals['v(XYZ)']) - (1 / st));
+
+			for (let i = 0; i < planeObjects.length; i++) {
+
+				const plane = planes[i];
+				const po = planeObjects[i];
+				plane.coplanarPoint(po.position);
+				po.lookAt(
+					po.position.x - plane.normal.x,
+					po.position.y - plane.normal.y,
+					po.position.z - plane.normal.z,
+				);
+
+			}
+
+
+
+			var v0 = 0;
+			var vX = vals['v(X)'];
+			var vY = vals['v(Y)'];
+			var vZ = vals['v(Z)'];
+			var vW = vals['v(W)'];
+			var vXY = vals['v(XY)'];
+			var vXZ = vals['v(XZ)'];
+			var vXW = vals['v(XW)'];
+			var vYZ = vals['v(YZ)'];
+			var vYW = vals['v(YW)'];
+			var vZW = vals['v(ZW)'];
+			var vYZW = vals['v(YZW)'];
+			var vXZW = vals['v(XZW)'];
+			var vXYW = vals['v(XYW)'];
+			var vXYZ = vals['v(XYZ)'];
+			var vN = 1
+
+			var sX = (6 * vX - 6 * v0 + 2 * vXY - 2 * vY + 2 * vXZ - 2 * vZ + 2 * vXW - 2 * vW + 2 * vXZW - 2 * vZW + 2 * vXYW - 2 * vYW + 2 * vXYZ - 2 * vYZ + 6 * vN - 6 * vYZW) / 24;
+			var sY = (6 * vY - 6 * v0 + 2 * vXY - 2 * vX + 2 * vYZ - 2 * vZ + 2 * vYW - 2 * vW + 2 * vYZW - 2 * vZW + 2 * vXYW - 2 * vXW + 2 * vXYZ - 2 * vXZ + 6 * vN - 6 * vXZW) / 24;
+			var sZ = (6 * vZ - 6 * v0 + 2 * vYZ - 2 * vY + 2 * vXZ - 2 * vX + 2 * vZW - 2 * vW + 2 * vXZW - 2 * vXW + 2 * vYZW - 2 * vYW + 2 * vXYZ - 2 * vXY + 6 * vN - 6 * vXYW) / 24;
+			var sW = (6 * vW - 6 * v0 + 2 * vYW - 2 * vY + 2 * vZW - 2 * vZ + 2 * vXW - 2 * vX + 2 * vXZW - 2 * vXZ + 2 * vXYW - 2 * vXY + 2 * vYZW - 2 * vYZ + 6 * vN - 6 * vXYZ) / 24;
+
+
+			var bX = (vX - v0 + vXY - vY + vXZ - vZ + vXW - vW + vXZW - vZW + vXYW - vYW + vXYZ - vYZ + vN - vYZW) / 8;
+			var bY = (vY - v0 + vXY - vX + vYZ - vZ + vYW - vW + vYZW - vZW + vXYW - vXW + vXYZ - vXZ + vN - vXZW) / 8;
+			var bZ = (vZ - v0 + vYZ - vY + vXZ - vX + vZW - vW + vXZW - vXW + vYZW - vYW + vXYZ - vXY + vN - vXYW) / 8;
+			var bW = (vW - v0 + vYW - vY + vZW - vZ + vXW - vX + vXZW - vXZ + vXYW - vXY + vYZW - vYZ + vN - vXYZ) / 8;
+
+			sha.position.set(...to_trap(sX, sY, sZ, sW));
+
+
+			ban.position.set(...to_trap(bX, bY, bZ, bW));
+
+
+
+		}
+
+		const gui = new GUI({ touchStyles: true });
+		gui.add(vals, 'v(X)').min(0).max(1).onChange(d => { cores(); });
+		gui.add(vals, 'v(Y)').min(0).max(1).onChange(d => { cores(); });
+		gui.add(vals, 'v(Z)').min(0).max(1).onChange(d => { cores(); });
+		gui.add(vals, 'v(W)').min(0).max(1).onChange(d => { cores(); });
+		gui.add(vals, 'v(XY)').min(0).max(1).onChange(d => { cores(); });
+		gui.add(vals, 'v(XZ)').min(0).max(1).onChange(d => { cores(); });
+		gui.add(vals, 'v(XW)').min(0).max(1).onChange(d => { cores(); });
+		gui.add(vals, 'v(YZ)').min(0).max(1).onChange(d => { cores(); });
+		gui.add(vals, 'v(YW)').min(0).max(1).onChange(d => { cores(); });
+		gui.add(vals, 'v(ZW)').min(0).max(1).onChange(d => { cores(); });
+		gui.add(vals, 'v(YZW)').min(0).max(1).onChange(d => { cores(); });
+		gui.add(vals, 'v(XZW)').min(0).max(1).onChange(d => { cores(); });
+		gui.add(vals, 'v(XYW)').min(0).max(1).onChange(d => { cores(); });
+		gui.add(vals, 'v(XYZ)').min(0).max(1).onChange(d => { cores(); });
+
+		cores();
+
+
+
+
+
+		const xlinverts = new Float32Array([-0.5, -0.5, 0, 0.5, 0.5, 0, 0.0, 0.0, 0, 0.5, -0.5, 0, -0.5, 0.5, 0]);
+		const ylinverts = new Float32Array([0.0, -0.5, 0, 0.0, 0.0, 0, 0.5, 0.5, 0, 0.0, 0.0, 0, -0.5, 0.5, 0]);
+		const zlinverts = new Float32Array([0.5, -0.5, 0, -0.5, -0.5, 0, 0.5, 0.5, 0, -0.5, 0.5, 0]);
+		const wlinverts = new Float32Array([-0.5, 0.5, 0, -0.25, -0.5, 0, 0.0, 0.0, 0, 0.25, -0.5, 0, 0.5, 0.5, 0]);
+
+		const xlin = new THREE.BufferGeometry();
+		const ylin = new THREE.BufferGeometry();
+		const zlin = new THREE.BufferGeometry();
+		const wlin = new THREE.BufferGeometry();
+		xlin.setAttribute('position', new THREE.BufferAttribute(xlinverts, 3))
+		ylin.setAttribute('position', new THREE.BufferAttribute(ylinverts, 3))
+		zlin.setAttribute('position', new THREE.BufferAttribute(zlinverts, 3))
+		wlin.setAttribute('position', new THREE.BufferAttribute(wlinverts, 3))
+		var xlines = new THREE.Line(xlin, new THREE.LineBasicMaterial({ color: '#d7191c' }));
+		var ylines = new THREE.Line(ylin, new THREE.LineBasicMaterial({ color: '#abdda4' }));
+		var zlines = new THREE.Line(zlin, new THREE.LineBasicMaterial({ color: '#2b83ba' }));
+		var wlines = new THREE.Line(wlin, new THREE.LineBasicMaterial({ color: '#fdae61' }));
+		xlines.position.set(+1.7, +1.7, +1.7);
+		ylines.position.set(+1.7, -1.7, -1.7);
+		zlines.position.set(-1.7, +1.7, -1.7);
+		wlines.position.set(-1.7, -1.7, +1.7);
+		xlines.lookAt(+2, +2, +2)
+		ylines.lookAt(+2, -2, -2)
+		zlines.lookAt(-2, +2, -2)
+		wlines.lookAt(-2, -2, +2)
+		xlines.scale.set(0.1, 0.1, 0.1);
+		ylines.scale.set(0.1, 0.1, 0.1);
+		zlines.scale.set(0.1, 0.1, 0.1);
+		wlines.scale.set(0.1, 0.1, 0.1);
+		scene.add(xlines)
+		scene.add(ylines)
+		scene.add(zlines)
+		scene.add(wlines)
+
+
+		return scene;
+	}
+
+	function make_camera(ratio) {
+		const camera = new THREE.PerspectiveCamera(70, ratio, 0.01, 10);
+		camera.position.set(4, 2, 2);
+
+		return camera;
+	}
+
+	function make_renderer(scene, camera) {
+
+		const renderer = new THREE.WebGLRenderer({ antialias: true, stencil: true });
+		renderer.setPixelRatio(window.devicePixelRatio);
+		renderer.setSize(window.innerWidth, window.innerHeight);
+		renderer.setAnimationLoop(() => { renderer.render(scene, camera) });
+		renderer.shadowMap.enabled = true;
+		renderer.localClippingEnabled = true;
+		document.body.appendChild(renderer.domElement);
+		const controls = new OrbitControls(camera, renderer.domElement);
+
+		return renderer;
+	}
+
+
+	const scene = make_scene();
+	const camera = make_camera(window.innerWidth / window.innerHeight);
+	const renderer = make_renderer(scene, camera);
+
+	document.body.appendChild(renderer.domElement);
+
+	function onWindowResize() {
+		camera.aspect = window.innerWidth / window.innerHeight;
+		camera.updateProjectionMatrix();
+		renderer.setSize(window.innerWidth, window.innerHeight);
+	}
+
+	window.addEventListener('resize', onWindowResize);
+</script>

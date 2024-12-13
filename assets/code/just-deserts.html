@@ -15,21 +15,19 @@
 	}
 </style>
 
-<script async src="https://unpkg.com/es-module-shims@1.3.6/dist/es-module-shims.js"></script>
-
-
 <script type="importmap">
-  {
-    "imports": {
-      "three": "https://unpkg.com/three@0.146.0/build/three.module.js"
-    }
-  }
+	{
+		"imports": {
+			"three": "https://cdn.jsdelivr.net/npm/three@0.171.0/build/three.module.js",
+			"three/addons/": "https://cdn.jsdelivr.net/npm/three@0.171.0/examples/jsm/"
+		}
+	}
 </script>
 
 <script type="module">
 	import { Color, UniformsUtils, ShaderMaterial, Scene, Vector3, Plane, BufferGeometry, BufferAttribute, MeshBasicMaterial, Mesh, DoubleSide, LineBasicMaterial, PointsMaterial, Points, AxesHelper, Line, PerspectiveCamera, WebGLRenderer } from 'three';
-	import { OrbitControls } from 'https://unpkg.com/three@0.146.0/examples/jsm/controls/OrbitControls.js';
-	import { GUI } from 'https://unpkg.com/three@0.146.0/examples/jsm/libs/lil-gui.module.min.js';
+	import { OrbitControls } from 'three/addons/controls/OrbitControls.js';
+	import { GUI } from 'three/addons/libs/lil-gui.module.min.js';
 
 	const ToonShaderHatching = {
 		uniforms: {
