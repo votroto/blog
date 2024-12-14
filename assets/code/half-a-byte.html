@@ -122,6 +122,12 @@
 		const scene = new THREE.Scene();
 		scene.background = new THREE.Color(0x333344);
 
+		const bg_geometry = new THREE.SphereGeometry(25, 32, 16);
+		const bg_material = new THREE.MeshPhongMaterial({ color: "#666", side: THREE.BackSide });
+		const bg_sphere = new THREE.Mesh(bg_geometry, bg_material);
+		scene.add(bg_sphere);
+
+
 		const lights = [
 			{ color: '#d7191c', intensity: 2, position: [+2, +2, +2] },
 			{ color: '#abdda4', intensity: 2, position: [+2, -2, -2] },
@@ -295,8 +301,8 @@
 	}
 
 	function make_camera(ratio) {
-		const camera = new THREE.PerspectiveCamera(70, ratio, 0.01, 10);
-		camera.position.set(4, 2, 2);
+		const camera = new THREE.PerspectiveCamera(70, ratio, 0.01, 50);
+		camera.position.set(4, -2, -2);
 
 		return camera;
 	}
