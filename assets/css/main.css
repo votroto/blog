@@ -17,7 +17,6 @@
 		--body-color-fg: #424242;
 		--body-strong-fg: #c94f6d;
 		--body-link-fg: #327F99;
-
 	}
 }
 
@@ -85,7 +84,6 @@ p {
 }
 
 a {
-	text-decoration: none;
 	color: var(--body-link-fg);
 	font-weight: inherit;
 }

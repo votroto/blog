@@ -10,7 +10,7 @@ hidden: true
 
 Intuitively, fair allocations should be in the middle of the core, and for convex games, that is precisely where the Shapley value is. If a game is non-convex but is at least superadditive, the Shapley value will still be individually rational; however, failing even that, there are situations where both fairness and rationality are not achievable at the same time; some friends are just not worth keeping.
 
-The interactive example above plots the *normalized Banzhaf value* (black) and the *Shapley index* (white), as it is rather difficult to appreciate the extra dimension of the standard Banzhaf value on a flat screen. For the same reason, please also keep in mind that straight lines no longer appear straight.
+The interactive example above plots the *normalized Banzhaf value* (black) and the *Shapley value* (white), as it is rather difficult to appreciate the extra dimension of the standard Banzhaf value on a flat screen. For the same reason, please also keep in mind that straight lines no longer appear straight.
 
 ## Other solution concepts.
 

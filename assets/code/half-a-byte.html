@@ -302,7 +302,8 @@
 
 	function make_camera(ratio) {
 		const camera = new THREE.PerspectiveCamera(70, ratio, 0.01, 50);
-		camera.position.set(4, -2, -2);
+		const zoom = 1.1;
+		camera.position.set(4 / zoom, -2 / zoom, -2 / zoom);
 
 		return camera;
 	}
