@@ -3,9 +3,10 @@
   <head>
 	<meta name="viewport" content="width=device-width, initial-scale=1">
 	<link rel="icon" href="{{ '/assets/img/favicon.svg' | relative_url }}">
-    <meta charset="utf-8">
-    <title>{{ page.title }}</title>
-    <link rel="stylesheet" href="{{ '/assets/css/main.css' | relative_url }}">
+  <meta charset="utf-8">
+  <title>{{ page.title }}</title>
+  <link rel="stylesheet" href="{{ '/assets/css/main.css' | relative_url }}">
+  {% if page.excerpt %} <meta name="description" content="{{ page.excerpt }}">{% endif %}
   </head>
   <body>
     {{ content }}

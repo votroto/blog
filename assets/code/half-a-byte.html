@@ -173,7 +173,7 @@
 
 		planes.forEach((plane, i) => {
 			const stencilGroup = createPlaneStencilGroup(geometry, plane, i + 1);
-			const planeMat = new THREE.MeshStandardMaterial({
+			const planeMat = new THREE.MeshPhongMaterial({
 				color: "#fdae61",
 				clippingPlanes: planes.filter(p => p !== plane),
 				side: THREE.DoubleSide,
@@ -314,7 +314,6 @@
 		renderer.setSize(window.innerWidth, window.innerHeight);
 		renderer.setAnimationLoop(() => { renderer.render(scene, camera) });
 		renderer.localClippingEnabled = true;
-		document.body.appendChild(renderer.domElement);
 		const controls = new OrbitControls(camera, renderer.domElement);
 
 		return renderer;

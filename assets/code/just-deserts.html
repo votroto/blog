@@ -195,20 +195,19 @@
 		}
 
 		const gui = new GUI({ touchStyles: true });
-		const folder_ext = gui.addFolder('Extra');
+		const ext = gui.addFolder('Extra');
 
-		gui.add(params, 'v(X)').min(0).max(1).onChange(d => { indv[0].constant = -d; shap(); });
-		gui.add(params, 'v(Y)').min(0).max(1).onChange(d => { indv[1].constant = -d; shap(); });
-		gui.add(params, 'v(Z)').min(0).max(1).onChange(d => { indv[2].constant = -d; shap(); });
-		gui.add(params, 'v(XY)').min(0).max(1).onChange(d => { coal[0].constant = -d; shap(); });
-		gui.add(params, 'v(XZ)').min(0).max(1).onChange(d => { coal[1].constant = -d; shap(); });
-		gui.add(params, 'v(YZ)').min(0).max(1).onChange(d => { coal[2].constant = -d; shap(); });
-		folder_ext.add(params, 'v(N)').min(0).max(2).onChange(d => { mesh_cor.scale.set(d, d, d); mesh_pre.scale.set(d, d, d); mesh_imp.scale.set(d, d, d); mesh_preglow.scale.set(d, d, d); shap(); });
-		folder_ext.add(params, 'Banzhaf value').onChange(d => { baz.visible = d; });
-		folder_ext.add(params, 'Shapley value').onChange(d => { sha.visible = d; });
+		gui.add(params, 'v(X)', 0, 1).onChange(d => { indv[0].constant = -d; shap(); });
+		gui.add(params, 'v(Y)', 0, 1).onChange(d => { indv[1].constant = -d; shap(); });
+		gui.add(params, 'v(Z)', 0, 1).onChange(d => { indv[2].constant = -d; shap(); });
+		gui.add(params, 'v(XY)', 0, 1).onChange(d => { coal[0].constant = -d; shap(); });
+		gui.add(params, 'v(XZ)', 0, 1).onChange(d => { coal[1].constant = -d; shap(); });
+		gui.add(params, 'v(YZ)', 0, 1).onChange(d => { coal[2].constant = -d; shap(); });
+		ext.add(params, 'v(N)', 0, 2).onChange(d => { mesh_cor.scale.set(d, d, d); mesh_pre.scale.set(d, d, d); mesh_imp.scale.set(d, d, d); mesh_preglow.scale.set(d, d, d); shap(); });
+		ext.add(params, 'Banzhaf value').onChange(d => { baz.visible = d; });
+		ext.add(params, 'Shapley value').onChange(d => { sha.visible = d; });
 
-		gui.domElement.classList.add('force-touch-styles');
-		folder_ext.close();
+		ext.close();
 		gui.close();
 
 		const axesHelper = new AxesHelper(2);
@@ -258,7 +257,6 @@
 		renderer.setSize(window.innerWidth, window.innerHeight);
 		renderer.setAnimationLoop(() => { renderer.render(scene, camera) });
 		renderer.localClippingEnabled = true;
-
 		const controls = new OrbitControls(camera, renderer.domElement);
 
 		return renderer;
