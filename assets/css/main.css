@@ -1,5 +1,6 @@
 :root {
 	--text-align: left;
+	color-scheme: dark light;
 }
 
 @media (prefers-color-scheme: dark) {
