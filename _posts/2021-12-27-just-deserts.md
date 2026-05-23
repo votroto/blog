@@ -5,6 +5,8 @@ subtitle: "An interactive introduction to fundamental solution concepts in coali
 excerpt: "A group of friends has baked a cake, and now they are looking to share it. How should they do that?"
 hero: "/assets/code/just-deserts.html"
 tag: "Game Theory"
+img: "/assets/img/core.svg"
+#imgstyle: "background: linear-gradient(-45deg, #161515, #1c1e2c)"
 ---
 
 A group of friends has baked a cake and are now looking to share it. How should they do that? Let's start with a couple of obvious requirements: feasibility --- they can't split more than the entire cake; efficiency --- if everyone is happy to switch to a different division, and some players strictly prefer it, they should pick that division instead. In particular, they ought not to throw any of the cake away.

@@ -1,10 +1,11 @@
 ---
+permalink: /posts
 layout: default
+title: Posts
 ---
 
 <nav id="main-content">
-	{{ content }}
-
+	<h1>Posts</h1>
 	<ul id="post-list">
 		{%- assign date_format = "%b %-d, %Y" -%}
 		{%- assign posts = site.posts -%}
@@ -13,11 +14,12 @@ layout: default
 			{%- if post.hidden != true -%}
 			<li class="post-card">
 				<a class="post-link" href="{{ post.url | relative_url }}">
-					<div>
+					<div class="post-left">
 						<h2>{{ post.title | escape }}</h2>
 						<p class="excerpt">{{ post.excerpt }}</p>
 						<span class="post-meta">{{ post.date | date: date_format }}</span>
 					</div>
+					<div class="post-right"><img class="invertible" alt="post cover image" src="{{ site.assets }}{{ post.img }}"/></div>
 				</a>
 			</li>
 			{%- endif -%}

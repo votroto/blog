@@ -1,0 +1,1191 @@
+# ============================================================================
+# STANDARDIZED GAME DATASET - CONVERTED FROM QUACK.JL T14 EXAMPLES
+# ============================================================================
+
+# --- ADAM21 ---
+
+# ID: adam21_townsend
+# NAME: Townsend game
+# REF: Adam et al. 2021
+# DIMS: 1, 1
+# SUM: zero
+# NE1: 0.0
+# NE2: 0.0
+
+NNEG1: 2.25+x11 >= 0, 2.5-x11 >= 0
+NULL1: 0 = 0
+NNEG2: 2.5+x21 >= 0, 1.75-x21 >= 0
+NULL2: 0 = 0
+
+U1: -(cos((x11-0.1)*x21)^2 + x11*sin(3*x11+x21))
+U2: (cos((x11-0.1)*x21)^2 + x11*sin(3*x11+x21))
+
+---
+
+# --- CHASNOV20 ---
+
+# ID: chasnov20_5_2
+# NAME: Torus game
+# REF: Chasnov et al. 2020
+# DIMS: 1, 1
+# SUM: general
+# NE1: -1.063
+# NE2: 1.014
+
+NNEG1: -x11^2+pi^2 >= 0
+NULL1: 0 = 0
+NNEG2: -x21^2+pi^2 >= 0
+NULL2: 0 = 0
+
+U1: 1*cos(x11) - 1*cos(x11-x21)
+U2: 1.5*cos(x21-pi/8) - 1*cos(x21-x11)
+
+---
+
+# ID: chasnov20_b_1
+# NAME: Softmax game
+# REF: Chasnov et al. 2020
+# DIMS: 1, 1
+# SUM: zero
+# NE1: 0.5
+# NE2: 0.5
+
+NNEG1: x11 >= 0, 1-x11 >= 0
+NULL1: 0 = 0
+NNEG2: x21 >= 0, 1-x21 >= 0
+NULL2: 0 = 0
+
+U1: -(softmax(x21)' * [1 -1; -1 1] * softmax(x11))
+U2: (softmax(x21)' * [1 -1; -1 1] * softmax(x11))
+
+---
+
+# --- DASKALAKIS23 ---
+
+# ID: daskalakis23_d
+# NAME: Daskalakis game D
+# REF: Daskalakis et al. 2023
+# DIMS: 1, 1
+# SUM: zero
+# NE1: 0.5
+# NE2: 0.5
+
+NNEG1: x11-x11^2 >= 0
+NULL1: 0 = 0
+NNEG2: x21-x21^2 >= 0
+NULL2: 0 = 0
+
+U1: -((x11-0.5)*(x21-0.5))
+U2: ((x11-0.5)*(x21-0.5))
+
+---
+
+# ID: daskalakis23_e_1st
+# NAME: Daskalakis game E
+# REF: Daskalakis et al. 2023
+# DIMS: 1, 1
+# SUM: zero
+# NE1: 0.0
+# NE2: 0.0
+
+NNEG1: 1-x11^2 >= 0
+NULL1: 0 = 0
+NNEG2: 1-x21^2 >= 0
+NULL2: 0 = 0
+
+U1: -((-(4*x11^2-(x21-3*x11+x11^3/20)^2-x21^4/10)*exp(-(x11^2+x21^2)/100)))
+U2: ((-(4*x11^2-(x21-3*x11+x11^3/20)^2-x21^4/10)*exp(-(x11^2+x21^2)/100)))
+
+---
+
+# --- DRESHER61 ---
+
+# ID: dresher61_pg110
+# NAME: Dresher game page 110
+# REF: Dresher 1961
+# DIMS: 1, 1
+# SUM: zero
+# NE1: 0.5
+# NE2: 0.5
+
+NNEG1: x11 >= 0, 1-x11 >= 0
+NULL1: 0 = 0
+NNEG2: x21 >= 0, 1-x21 >= 0
+NULL2: 0 = 0
+
+U1: -((x11-x21)^2)
+U2: ((x11-x21)^2)
+
+---
+
+# ID: dresher61_pg111
+# NAME: Dresher game page 111
+# REF: Dresher 1961
+# DIMS: 1, 1
+# SUM: zero
+# NE1: 0.5
+# NE2: 0.5
+
+NNEG1: x11 >= 0, 1-x11 >= 0
+NULL1: 0 = 0
+NNEG2: x21 >= 0, 1-x21 >= 0
+NULL2: 0 = 0
+
+U1: -(sqrt((x21-x11)^2)*(x21-x11)^2)
+U2: (sqrt((x21-x11)^2)*(x21-x11)^2)
+
+---
+
+# --- GALE58 ---
+
+# ID: gale58_poly
+# NAME: Gale-Gross polynomial game
+# REF: Gale & Gross 1958
+# DIMS: 1, 1
+# SUM: zero
+# NE1: 0.5
+# NE2: 0.5
+
+NNEG1: 1+x11 >= 0, 1-x11 >= 0
+NULL1: 0 = 0
+NNEG2: 1+x21 >= 0, 1-x21 >= 0
+NULL2: 0 = 0
+
+U1: complex Gale-Gross formula (see Julia code)
+U2: -U1
+
+---
+
+# --- GOLMAN09 ---
+
+# ID: golman09_isolated_squared
+# NAME: Blotto game (isolated, p=2)
+# REF: Golman & Page 2009
+# DIMS: 5, 5
+# SUM: zero
+# NE1: 0.2, 0.2, 0.2, 0.2, 0.2
+# NE2: 0.2, 0.2, 0.2, 0.2, 0.2
+
+NNEG1: x11 >= 0, x12 >= 0, x13 >= 0, x14 >= 0, x15 >= 0
+NULL1: x11 + x12 + x13 + x14 + x15 - 1 = 0
+NNEG2: x21 >= 0, x22 >= 0, x23 >= 0, x24 >= 0, x25 >= 0
+NULL2: x21 + x22 + x23 + x24 + x25 - 1 = 0
+
+U1: sign(x11-x21)*sqrt(abs(x11-x21)) + sign(x12-x22)*sqrt(abs(x12-x22)) + sign(x13-x23)*sqrt(abs(x13-x23)) + sign(x14-x24)*sqrt(abs(x14-x24)) + sign(x15-x25)*sqrt(abs(x15-x25))
+U2: -(sign(x11-x21)*sqrt(abs(x11-x21)) + sign(x12-x22)*sqrt(abs(x12-x22)) + sign(x13-x23)*sqrt(abs(x13-x23)) + sign(x14-x24)*sqrt(abs(x14-x24)) + sign(x15-x25)*sqrt(abs(x15-x25)))
+
+---
+
+# ID: golman09_isolated_linear
+# NAME: Blotto game (isolated, p=1)
+# REF: Golman & Page 2009
+# DIMS: 5, 5
+# SUM: zero
+# NE1: 0.2, 0.2, 0.2, 0.2, 0.2
+# NE2: 0.2, 0.2, 0.2, 0.2, 0.2
+
+NNEG1: x11 >= 0, x12 >= 0, x13 >= 0, x14 >= 0, x15 >= 0
+NULL1: x11 + x12 + x13 + x14 + x15 - 1 = 0
+NNEG2: x21 >= 0, x22 >= 0, x23 >= 0, x24 >= 0, x25 >= 0
+NULL2: x21 + x22 + x23 + x24 + x25 - 1 = 0
+
+U1: x11 - x21 + x12 - x22 + x13 - x23 + x14 - x24 + x15 - x25
+U2: -(x11 - x21 + x12 - x22 + x13 - x23 + x14 - x24 + x15 - x25)
+
+---
+
+# ID: golman09_all_pairs_squared
+# NAME: Blotto game (all pairs, p=2)
+# REF: Golman & Page 2009
+# DIMS: 5, 5
+# SUM: zero
+# NE1: varies
+# NE2: varies
+
+NNEG1: x11 >= 0, x12 >= 0, x13 >= 0, x14 >= 0, x15 >= 0
+NULL1: x11 + x12 + x13 + x14 + x15 - 1 = 0
+NNEG2: x21 >= 0, x22 >= 0, x23 >= 0, x24 >= 0, x25 >= 0
+NULL2: x21 + x22 + x23 + x24 + x25 - 1 = 0
+
+U1: sum(sqrt(x1j*x1k - x2j*x2k)^2 * (x1j*x1k - x2j*x2k) for j,k=1:5, j<k) + sum(sqrt(x1i-x2i)^2 * (x1i-x2i) for i=1:5)
+U2: -U1
+
+---
+
+# ID: golman09_all_pairs_linear
+# NAME: Blotto game (all pairs, p=1)
+# REF: Golman & Page 2009
+# DIMS: 5, 5
+# SUM: zero
+# NE1: varies
+# NE2: varies
+
+NNEG1: x11 >= 0, x12 >= 0, x13 >= 0, x14 >= 0, x15 >= 0
+NULL1: x11 + x12 + x13 + x14 + x15 - 1 = 0
+NNEG2: x21 >= 0, x22 >= 0, x23 >= 0, x24 >= 0, x25 >= 0
+NULL2: x21 + x22 + x23 + x24 + x25 - 1 = 0
+
+U1: sum(x1j*x1k - x2j*x2k for j,k=1:5, j<k) + sum(x1i - x2i for i=1:5)
+U2: -U1
+
+---
+
+# ID: golman09_all_sets_squared
+# NAME: Blotto game (all sets, p=2)
+# REF: Golman & Page 2009
+# DIMS: 5, 5
+# SUM: zero
+# NE1: varies
+# NE2: varies
+
+NNEG1: x11 >= 0, x12 >= 0, x13 >= 0, x14 >= 0, x15 >= 0
+NULL1: x11 + x12 + x13 + x14 + x15 - 1 = 0
+NNEG2: x21 >= 0, x22 >= 0, x23 >= 0, x24 >= 0, x25 >= 0
+NULL2: x21 + x22 + x23 + x24 + x25 - 1 = 0
+
+U1: sum(sqrt(prod(x1i for i in I) - prod(x2i for i in I))^2 * (prod(x1i for i in I) - prod(x2i for i in I)) for I in all_combinations(5))
+U2: -U1
+
+---
+
+# --- KARLIN59 ---
+
+# ID: karlin59_vol2_sec71_ex1
+# NAME: Karlin game (Vol II Section 7.1 Example 1)
+# REF: Karlin 1959
+# DIMS: 1, 1
+# SUM: zero
+# NE1: 0.5
+# NE2: 0.5
+
+NNEG1: x11 >= 0, 1-x11 >= 0
+NULL1: 0 = 0
+NNEG2: x21 >= 0, 1-x21 >= 0
+NULL2: 0 = 0
+
+U1: -(1 / (1 + 0.5*(x11-x21)^2))
+U2: (1 / (1 + 0.5*(x11-x21)^2))
+
+---
+
+# ID: karlin59_vol2_sec71_ex2
+# NAME: Karlin game (Vol II Section 7.1 Example 2)
+# REF: Karlin 1959
+# DIMS: 1, 1
+# SUM: zero
+# NE1: varies
+# NE2: varies
+
+NNEG1: x11 >= 0, 1-x11 >= 0
+NULL1: 0 = 0
+NNEG2: x21 >= 0, 1-x21 >= 0
+NULL2: 0 = 0
+
+U1: -((x21-0.5)*((1+(x11-0.5)*(x21-0.5)^2)/(1+(x11-0.5)^2*(x21-0.5)^4) - 1/(1+(x11/3-0.5)*(x21-0.5)^4)))
+U2: ((x21-0.5)*((1+(x11-0.5)*(x21-0.5)^2)/(1+(x11-0.5)^2*(x21-0.5)^4) - 1/(1+(x11/3-0.5)*(x21-0.5)^4)))
+
+---
+
+# ID: karlin59_vol2_sec76_pr1
+# NAME: Karlin game (Vol II Section 7.6 Problem 1)
+# REF: Karlin 1959
+# DIMS: 1, 1
+# SUM: zero
+# NE1: 0.5
+# NE2: 0.5
+
+NNEG1: x11 >= 0, 1-x11 >= 0
+NULL1: 0 = 0
+NNEG2: x21 >= 0, 1-x21 >= 0
+NULL2: 0 = 0
+
+U1: -(2*(x11+x21)/((2*x11+1)*(2*x21+1)))
+U2: (2*(x11+x21)/((2*x11+1)*(2*x21+1)))
+
+---
+
+# ID: karlin59_vol2_sec76_pr2
+# NAME: Karlin game (Vol II Section 7.6 Problem 2)
+# REF: Karlin 1959
+# DIMS: 1, 1
+# SUM: zero
+# NE1: 0.5
+# NE2: 0.5
+
+NNEG1: x11 >= 0, 1-x11 >= 0
+NULL1: 0 = 0
+NNEG2: x21 >= 0, 1-x21 >= 0
+NULL2: 0 = 0
+
+U1: -(((1+x11)*(1+x21))/(1+x11*x21)^2)
+U2: (((1+x11)*(1+x21))/(1+x11*x21)^2)
+
+---
+
+# --- KROUPA21 ---
+
+# ID: kroupa21_5
+# NAME: Three-player network game
+# REF: Kroupa et al. 2021
+# DIMS: 1, 1, 1
+# SUM: general
+# NE1: 0.0
+# NE2: 0.0
+# NE3: 0.0
+
+NNEG1: 1-x11^2 >= 0
+NULL1: 0 = 0
+NNEG2: 1-x21^2 >= 0
+NULL2: 0 = 0
+NNEG3: 1-x31^2 >= 0
+NULL3: 0 = 0
+
+U1: -2*x11*x21^2 + 5*x11*x21 - x21 - 2*x11^2 - 4*x11*x31 - 2*x31
+U2: 2*x11*x21^2 - 2*x11^2 - 5*x11*x21 + x21 - 2*x21*x31^2 - 2*x21^2 + 5*x21*x31
+U3: 4*x11^2 + 4*x11*x31 + 2*x31 + 2*x21*x31^2 + 2*x21^2 - 5*x21*x31
+
+---
+
+# ID: kroupa21_6
+# NAME: Four-player network game
+# REF: Kroupa et al. 2021
+# DIMS: 4, 4, 2, 2
+# SUM: general
+# NE1: varies
+# NE2: varies
+# NE3: varies
+# NE4: varies
+
+NNEG1: x11*(1-x11) >= 0, x12*(1-x12) >= 0, x13*(1-x13) >= 0, x14*(1-x14) >= 0
+NULL1: x11 + x12 + x13 + x14 - 0.5 = 0
+NNEG2: x21*(1-x21) >= 0, x22*(1-x22) >= 0, x23*(1-x23) >= 0, x24*(1-x24) >= 0
+NULL2: x21 + x22 + x23 + x24 - 0.8 = 0
+NNEG3: x31*(1-x31) >= 0, x32*(1-x32) >= 0
+NULL3: x31 + x32 - 1 = 0
+NNEG4: x41*(1-x41) >= 0, x42*(1-x42) >= 0
+NULL4: x41 + x42 - 1 = 0
+
+U1: 0.5 - eff[1](x11,x31) - eff[2](x12,x32) - eff[3](x13,x41) - eff[4](x14,x42) - 0.325
+U2: 0.8 - eff[1](x21,x31) - eff[2](x22,x32) - eff[3](x23,x41) - eff[4](x24,x42) - 0.325
+U3: eff[1](x11,x31) + eff[2](x12,x32) + eff[1](x21,x31) + eff[2](x22,x32) - 0.325
+U4: eff[3](x13,x41) + eff[4](x14,x42) + eff[3](x23,x41) + eff[4](x24,x42) - 0.325
+
+---
+
+# --- MERTIKOPOULOS18 ---
+
+# ID: mertikopoulos18_fig1
+# NAME: Mertikopoulos saddle-point game Fig 1
+# REF: Mertikopoulos et al. 2018
+# DIMS: 1, 1
+# SUM: zero
+# NE1: 0.5
+# NE2: 0.5
+
+NNEG1: x11 >= 0, 1-x11 >= 0
+NULL1: 0 = 0
+NNEG2: x21 >= 0, 1-x21 >= 0
+NULL2: 0 = 0
+
+U1: -((x11-0.5)*(x21-0.5) + 0.333*exp(-(x11-0.25)^2-(x21-0.75)^2))
+U2: ((x11-0.5)*(x21-0.5) + 0.333*exp(-(x11-0.25)^2-(x21-0.75)^2))
+
+---
+
+# ID: mertikopoulos18_2_2
+# NAME: Mertikopoulos saddle-point game 2.2
+# REF: Mertikopoulos et al. 2018
+# DIMS: 1, 1
+# SUM: zero
+# NE1: 0.0
+# NE2: 0.0
+
+NNEG1: 1+x11 >= 0, 1-x11 >= 0
+NULL1: 0 = 0
+NNEG2: 1+x21 >= 0, 1-x21 >= 0
+NULL2: 0 = 0
+
+U1: -(-((x11^4*x21^2 + x11^2 + 1)*(x11^2*x21^4 - x21^2 + 1)))
+U2: ((-((x11^4*x21^2 + x11^2 + 1)*(x11^2*x21^4 - x21^2 + 1)))
+
+---
+
+# --- MISC ---
+
+# ID: misc_tangent_ridge
+# NAME: Tangent Ridge Game
+# REF: Custom
+# DIMS: 1, 1
+# SUM: general
+# NE1: 0.0
+# NE2: 0.0
+
+NNEG1: x11 >= 0, 1-x11 >= 0
+NULL1: 0 = 0
+NNEG2: x21 >= 0, 1-x21 >= 0
+NULL2: 0 = 0
+
+U1: -sqrt(abs(x11-x21))
+U2: -sqrt(abs(x11-tan(x21)))
+
+---
+
+# ID: misc_square_diff
+# NAME: Square difference game
+# REF: Miscellaneous
+# DIMS: 1, 1
+# SUM: zero
+# NE1: 0.0
+# NE2: 0.0
+
+NNEG1: 1-x11^2 >= 0
+NULL1: 0 = 0
+NNEG2: 1-x21^2 >= 0
+NULL2: 0 = 0
+
+U1: -(x21^2 - x11^2)
+U2: (x21^2 - x11^2)
+
+---
+
+# ID: misc_monkey_saddle
+# NAME: Monkey saddle game
+# REF: Miscellaneous
+# DIMS: 1, 1
+# SUM: zero
+# NE1: 0.0
+# NE2: 0.0
+
+NNEG1: 1-x11^2 >= 0
+NULL1: 0 = 0
+NNEG2: 1-x21^2 >= 0
+NULL2: 0 = 0
+
+U1: -(x11^3 - 3*x11*x21^2)
+U2: (x11^3 - 3*x11*x21^2)
+
+---
+
+# ID: misc_mul_div
+# NAME: Multiplication and division game
+# REF: Miscellaneous
+# DIMS: 1, 1
+# SUM: general
+# NE1: 0.0
+# NE2: 0.0
+
+NNEG1: -(2+x11)^2+1 >= 0
+NULL1: 0 = 0
+NNEG2: -(2+x21)^2+1 >= 0
+NULL2: 0 = 0
+
+U1: -2*x11*x21
+U2: 2*x11/x21
+
+---
+
+# ID: misc_counter
+# NAME: Counter example game
+# REF: Miscellaneous (Lukas Adam)
+# DIMS: 1, 1
+# SUM: zero
+# NE1: 0.5
+# NE2: 0.5
+
+NNEG1: x11 >= 0, 1-x11 >= 0
+NULL1: 0 = 0
+NNEG2: x21 >= 0, 1-x21 >= 0
+NULL2: 0 = 0
+
+U1: -(v1(x11, x21)) where v1(x,y) = x+y if x-y>=0; 8x-6y if x-y<=0 && 2x-y>=0; -2x-y if 2x-y<=0
+U2: (v1(x11, x21)) where v1(x,y) = x+y if x-y>=0; 8x-6y if x-y<=0 && 2x-y>=0; -2x-y if 2x-y<=0
+
+---
+
+# --- NGUYEN23 ---
+
+# ID: nguyen23_osnr_network
+# NAME: OSNR network game (6 players)
+# REF: Nguyen et al. 2023
+# DIMS: 1, 1, 1, 1, 1, 1
+# SUM: general
+# NE1: 0.3329
+# NE2: 0.3375
+# NE3: 0.3412
+# NE4: 0.2305
+# NE5: 0.2361
+# NE6: 0.2421
+
+NNEG1: -x11^2+2.2*x11-0.4 >= 0
+NULL1: 0 = 0
+NNEG2: -x21^2+2.2*x21-0.4 >= 0
+NULL2: 0 = 0
+NNEG3: -x31^2+2.2*x31-0.4 >= 0
+NULL3: 0 = 0
+NNEG4: -x41^2+2.2*x41-0.4 >= 0
+NULL4: 0 = 0
+NNEG5: -x51^2+2.2*x51-0.4 >= 0
+NULL5: 0 = 0
+NNEG6: -x61^2+2.2*x61-0.4 >= 0
+NULL6: 0 = 0
+
+U1: -(x11 - 0.5*(log(1 + (0.261*x11/(0.43e-6+sum(p[1,j]*x[j])))/(1-p[1,1]*x11/(0.43e-6+sum(p[1,j]*x[j])))) - x11))
+U2: -(x21 - 0.51*(log(1 + (0.494*x21/(0.43e-6+sum(p[2,j]*x[j])))/(1-p[2,2]*x21/(0.43e-6+sum(p[2,j]*x[j])))) - x21))
+U3: -(x31 - 0.52*(log(1 + (0.107*x31/(0.43e-6+sum(p[3,j]*x[j])))/(1-p[3,3]*x31/(0.43e-6+sum(p[3,j]*x[j])))) - x31))
+U4: -(x41 - 0.3*(log(1 + (0.366*x41/(0.43e-6+sum(p[4,j]*x[j])))/(1-p[4,4]*x41/(0.43e-6+sum(p[4,j]*x[j])))) - x41))
+U5: -(x51 - 0.31*(log(1 + (0.208*x51/(0.43e-6+sum(p[5,j]*x[j])))/(1-p[5,5]*x51/(0.43e-6+sum(p[5,j]*x[j])))) - x51))
+U6: -(x61 - 0.32*(log(1 + (0.305*x61/(0.43e-6+sum(p[6,j]*x[j])))/(1-p[6,6]*x61/(0.43e-6+sum(p[6,j]*x[j])))) - x61))
+
+---
+
+# --- NIE22 ---
+
+# ID: nie22_6_1_i
+# NAME: Nie polynomial saddle point (Example 6.1 i)
+# REF: Nie et al. 2022
+# DIMS: 3, 3
+# SUM: zero
+# NE1: 0.0, 1.0, 0.0
+# NE2: 0.25, 0.5, 0.25
+
+NNEG1: x11 >= 0, x12 >= 0, x13 >= 0
+NULL1: x11 + x12 + x13 - 1 = 0
+NNEG2: x21 >= 0, x22 >= 0, x23 >= 0
+NULL2: x21 + x22 + x23 - 1 = 0
+
+U1: -(x11*x12 + x12*x13 + x13*x21 + x11*x23 + x21*x22 + x22*x23)
+U2: (x11*x12 + x12*x13 + x13*x21 + x11*x23 + x21*x22 + x22*x23)
+
+---
+
+# ID: nie22_6_1_ii
+# NAME: Nie polynomial saddle point (Example 6.1 ii)
+# REF: Nie et al. 2022
+# DIMS: 3, 3
+# SUM: zero
+# NE1: 0.0, 0.0, 1.0
+# NE2: 0.0, 0.0, 1.0
+
+NNEG1: x11 >= 0, x12 >= 0, x13 >= 0
+NULL1: x11 + x12 + x13 - 1 = 0
+NNEG2: x21 >= 0, x22 >= 0, x23 >= 0
+NULL2: x21 + x22 + x23 - 1 = 0
+
+U1: -(x11^3 + x12^3 - x13^3 - x21^3 - x22^3 + x23^3 + x13*x21*x22*(x21+x22) + x12*x21*x23*(x21+x23) + x11*x22*x23*(x22+x23))
+U2: (x11^3 + x12^3 - x13^3 - x21^3 - x22^3 + x23^3 + x13*x21*x22*(x21+x22) + x12*x21*x23*(x21+x23) + x11*x22*x23*(x22+x23))
+
+---
+
+# ID: nie22_6_1_iii
+# NAME: Nie polynomial saddle point (Example 6.1 iii)
+# REF: Nie et al. 2022
+# DIMS: 4, 4
+# SUM: zero
+# NE1: 0.25, 0.25, 0.25, 0.25
+# NE2: 0.25, 0.25, 0.25, 0.25
+
+NNEG1: x11 >= 0, x12 >= 0, x13 >= 0, x14 >= 0
+NULL1: x11 + x12 + x13 + x14 - 1 = 0
+NNEG2: x21 >= 0, x22 >= 0, x23 >= 0, x24 >= 0
+NULL2: x21 + x22 + x23 + x24 - 1 = 0
+
+U1: -(x11^2*x21^2 + x12^2*x22^2 + x13^2*x23^2 + x14^2*x24^2 - x11*x12 - x11*x13 - x11*x14 - x12*x13 - x12*x14 - x13*x14 - x21*x22 - x21*x23 - x21*x24 - x22*x23 - x22*x24 - x23*x24)
+U2: (x11^2*x21^2 + x12^2*x22^2 + x13^2*x23^2 + x14^2*x24^2 - x11*x12 - x11*x13 - x11*x14 - x12*x13 - x12*x14 - x13*x14 - x21*x22 - x21*x23 - x21*x24 - x22*x23 - x22*x24 - x23*x24)
+
+---
+
+# ID: nie22_6_1_iv
+# NAME: Nie polynomial saddle point (Example 6.1 iv)
+# REF: Nie et al. 2022
+# DIMS: 3, 3
+# SUM: zero
+# NE1: 0.0, 0.0, 0.0
+# NE2: 0.0, 0.0, 0.0
+
+NNEG1: x11 >= 0, x12 >= 0, x13 >= 0
+NULL1: x11 + x12 + x13 - 1 = 0
+NNEG2: x21 >= 0, x22 >= 0, x23 >= 0
+NULL2: x21 + x22 + x23 - 1 = 0
+
+U1: -(x11*x12*x21*x22 + x12*x13*x22*x23 + x13*x11*x23*x21 - x11^2*x23^2 - x12^2*x21^2 - x13^2*x22^2)
+U2: (x11*x12*x21*x22 + x12*x13*x22*x23 + x13*x11*x23*x21 - x11^2*x23^2 - x12^2*x21^2 - x13^2*x22^2)
+
+---
+
+# ID: nie22_6_2_i
+# NAME: Nie polynomial saddle point (Example 6.2 i)
+# REF: Nie et al. 2022
+# DIMS: 2, 2
+# SUM: zero
+# NE1: 0.3249, 0.3249
+# NE2: 1.0, 0.0
+
+NNEG1: x11 >= 0, x12 >= 0, 1-x11 >= 0, 1-x12 >= 0
+NULL1: 0 = 0
+NNEG2: x21 >= 0, x22 >= 0, 1-x21 >= 0, 1-x22 >= 0
+NULL2: 0 = 0
+
+U1: -((x11+x12+x21+x22+1)^2 - 4*(x11*x12 + x12*x21 + x21*x22 + x22 + x11))
+U2: ((x11+x12+x21+x22+1)^2 - 4*(x11*x12 + x12*x21 + x21*x22 + x22 + x11))
+
+---
+
+# ID: nie22_6_2_ii
+# NAME: Nie polynomial saddle point (Example 6.2 ii)
+# REF: Nie et al. 2022
+# DIMS: 3, 3
+# SUM: zero
+# NE1: 0.0, 0.0, 0.0
+# NE2: 0.0, 0.0, 0.0
+
+NNEG1: x11 >= 0, x12 >= 0, x13 >= 0, 1-x11 >= 0, 1-x12 >= 0, 1-x13 >= 0
+NULL1: 0 = 0
+NNEG2: x21 >= 0, x22 >= 0, x23 >= 0, 1-x21 >= 0, 1-x22 >= 0, 1-x23 >= 0
+NULL2: 0 = 0
+
+U1: -(x11 + x12 + x13 + x21 + x22 + x23 + x11^2*x22^2 - x21^2*x12^2 + x11^2*x23^2 - x21^2*x13^2 + x12^2*x23^2 - x22^2*x13^2)
+U2: (x11 + x12 + x13 + x21 + x22 + x23 + x11^2*x22^2 - x21^2*x12^2 + x11^2*x23^2 - x21^2*x13^2 + x12^2*x23^2 - x22^2*x13^2)
+
+---
+
+# ID: nie22_6_3_i
+# NAME: Nie polynomial saddle point (Example 6.3 i)
+# REF: Nie et al. 2022
+# DIMS: 3, 3
+# SUM: zero
+# NE1: -1.0, -1.0, 1.0
+# NE2: 1.0, 1.0, 1.0
+
+NNEG1: 1+x11 >= 0, 1+x12 >= 0, 1+x13 >= 0, 1-x11 >= 0, 1-x12 >= 0, 1-x13 >= 0
+NULL1: 0 = 0
+NNEG2: 1+x21 >= 0, 1+x22 >= 0, 1+x23 >= 0, 1-x21 >= 0, 1-x22 >= 0, 1-x23 >= 0
+NULL2: 0 = 0
+
+U1: -(x11 + x12 + x13 + x21 + x22 + x23 - (x11-x21)*(x12-x22)*(x13-x23))
+U2: (x11 + x12 + x13 + x21 + x22 + x23 - (x11-x21)*(x12-x22)*(x13-x23))
+
+---
+
+# ID: nie22_6_3_ii
+# NAME: Nie polynomial saddle point (Example 6.3 ii)
+# REF: Nie et al. 2022
+# DIMS: 3, 3
+# SUM: zero
+# NE1: -1.0, 1.0, -1.0
+# NE2: -1.0, 1.0, -1.0
+
+NNEG1: 1+x11 >= 0, 1+x12 >= 0, 1+x13 >= 0, 1-x11 >= 0, 1-x12 >= 0, 1-x13 >= 0
+NULL1: 0 = 0
+NNEG2: 1+x21 >= 0, 1+x22 >= 0, 1+x23 >= 0, 1-x21 >= 0, 1-x22 >= 0, 1-x23 >= 0
+NULL2: 0 = 0
+
+U1: -(x21^2 + x22^2 + x23^2 - x11^2 - x12^2 - x13^2 + x11*x22 - x12*x21 + x11*x23 - x13*x21 + x12*x23 - x13*x22)
+U2: (x21^2 + x22^2 + x23^2 - x11^2 - x12^2 - x13^2 + x11*x22 - x12*x21 + x11*x23 - x13*x21 + x12*x23 - x13*x22)
+
+---
+
+# ID: nie22_6_4_i
+# NAME: Nie polynomial saddle point (Example 6.4 i)
+# REF: Nie et al. 2022
+# DIMS: 3, 3
+# SUM: zero
+# NE1: -1.0, 0.0, 0.0
+# NE2: 1.0, 0.0, 0.0
+
+NNEG1: 1 >= 0
+NULL1: x11^2 + x12^2 + x13^2 - 1 = 0
+NNEG2: 1 >= 0
+NULL2: x21^2 + x22^2 + x23^2 - 1 = 0
+
+U1: -(x11^3 + x12^3 + x13^3 + x21^3 + x22^3 + x23^3 + 2*x11*x12*x21*x22 + 2*x11*x13*x21*x23 + 2*x12*x13*x22*x23)
+U2: (x11^3 + x12^3 + x13^3 + x21^3 + x22^3 + x23^3 + 2*x11*x12*x21*x22 + 2*x11*x13*x21*x23 + 2*x12*x13*x22*x23)
+
+---
+
+# ID: nie22_6_4_ii
+# NAME: Nie polynomial saddle point (Example 6.4 ii)
+# REF: Nie et al. 2022
+# DIMS: 3, 3
+# SUM: zero
+# NE1: 0.0, 0.0, 0.0
+# NE2: 0.0, 0.0, 0.0
+
+NNEG1: 1 >= 0
+NULL1: x11^2 + x12^2 + x13^2 - 1 = 0
+NNEG2: 1 >= 0
+NULL2: x21^2 + x22^2 + x23^2 - 1 = 0
+
+U1: -(x11^2*x21^2 + x12^2*x22^2 + x13^2*x23^2 + x11^2*x22*x23 + x12^2*x21*x23 + x13^2*x21*x22 + x21^2*x12*x13 + x22^2*x11*x13 + x23^2*x11*x12)
+U2: (x11^2*x21^2 + x12^2*x22^2 + x13^2*x23^2 + x11^2*x22*x23 + x12^2*x21*x23 + x13^2*x21*x22 + x21^2*x12*x13 + x22^2*x11*x13 + x23^2*x11*x12)
+
+---
+
+# ID: nie22_6_5
+# NAME: Nie polynomial saddle point (Example 6.5)
+# REF: Nie et al. 2022
+# DIMS: 3, 3
+# SUM: zero
+# NE1: 0.7264, 0.4576, 0.3492
+# NE2: 0.6883, 0.5463, 0.4772
+
+NNEG1: 1-x11^2-x12^2-x13^2 >= 0
+NULL1: 0 = 0
+NNEG2: 1-x21^2-x22^2-x23^2 >= 0
+NULL2: 0 = 0
+
+U1: -(x11^2*x21 + 2*x12^2*x22 + 3*x13^2*x23 - x11 - x12 - x13)
+U2: (x11^2*x21 + 2*x12^2*x22 + 3*x13^2*x23 - x11 - x12 - x13)
+
+---
+
+# ID: nie22_6_6
+# NAME: Nie polynomial saddle point (Example 6.6)
+# REF: Nie et al. 2022
+# DIMS: 3, 3
+# SUM: zero
+# NE1: 0.0, 0.0, 0.0
+# NE2: 0.0, 0.0, 0.0
+
+NNEG1: x11 >= 0, x12 >= 0, x13 >= 0
+NULL1: x11^2 + x12^2 + x13^2 - 1 = 0
+NNEG2: x21 >= 0, x22 >= 0, x23 >= 0
+NULL2: x21^2 + x22^2 + x23^2 - 1 = 0
+
+U1: -(x11^2*x22*x23 + x21^2*x12*x13 + x12^2*x21*x23 + x22^2*x11*x13 + x13^2*x21*x22 + x23^2*x11*x12)
+U2: (x11^2*x22*x23 + x21^2*x12*x13 + x12^2*x21*x23 + x22^2*x11*x13 + x13^2*x21*x22 + x23^2*x11*x12)
+
+---
+
+# --- PARRILO06 ---
+
+# ID: parrilo06_2_1
+# NAME: Parrilo polynomial game (Example 2.1)
+# REF: Parrilo 2006
+# DIMS: 1, 1
+# SUM: zero
+# NE1: 1.0
+# NE2: 0.0
+
+NNEG1: 1-x11 >= 0, 1+x11 >= 0
+NULL1: 0 = 0
+NNEG2: 1-x21 >= 0, 1+x21 >= 0
+NULL2: 0 = 0
+
+U1: -((x11-x21)^2)
+U2: ((x11-x21)^2)
+
+---
+
+# ID: parrilo06_3_1
+# NAME: Parrilo polynomial game (Example 3.1)
+# REF: Parrilo 2006
+# DIMS: 1, 1
+# SUM: zero
+# NE1: 0.7071
+# NE2: 0.8409
+
+NNEG1: 1-x11 >= 0, 1+x11 >= 0
+NULL1: 0 = 0
+NNEG2: 1-x21 >= 0, 1+x21 >= 0
+NULL2: 0 = 0
+
+U1: -(2*x11*x21^2 - x11^2 - x21)
+U2: (2*x11*x21^2 - x11^2 - x21)
+
+---
+
+# ID: parrilo06_3_2
+# NAME: Parrilo polynomial game (Example 3.2)
+# REF: Parrilo 2006
+# DIMS: 1, 1
+# SUM: zero
+# NE1: 0.2
+# NE2: 1.0
+
+NNEG1: 1-x11 >= 0, 1+x11 >= 0
+NULL1: 0 = 0
+NNEG2: 1-x21 >= 0, 1+x21 >= 0
+NULL2: 0 = 0
+
+U1: -(5*x11*x21 - 2*x11^2 - 2*x11*x21^2 - x21)
+U2: (5*x11*x21 - 2*x11^2 - 2*x11*x21^2 - x21)
+
+---
+
+# --- RATLIFF13 ---
+
+# ID: ratliff13_location
+# NAME: Location game
+# REF: Ratliff et al. 2013
+# DIMS: 1, 1
+# SUM: general
+# NE1: 1.0
+# NE2: -1.1
+
+NNEG1: pi^2-x11^2 >= 0
+NULL1: 0 = 0
+NNEG2: pi^2-x21^2 >= 0
+NULL2: 0 = 0
+
+U1: cos(x11) - 1*cos(x11-x21)
+U2: cos(x21) - 1.05*cos(x21-x11)
+
+---
+
+# --- RAZAVIYAYN20 ---
+
+# ID: razaviyayn20_5_1
+# NAME: Min-max game Example 5.1
+# REF: Razaviyayn et al. 2020
+# DIMS: 1, 1
+# SUM: zero
+# NE1: 0.0
+# NE2: 0.0
+
+NNEG1: 1+x11 >= 0, 1-x11 >= 0
+NULL1: 0 = 0
+NNEG2: 2*pi+x21 >= 0, 2*pi-x21 >= 0
+NULL2: 0 = 0
+
+U1: -(0.2*x11*x21 - cos(x21))
+U2: (0.2*x11*x21 - cos(x21))
+
+---
+
+# ID: razaviyayn20_5_3
+# NAME: Min-max game Example 5.3
+# REF: Razaviyayn et al. 2020
+# DIMS: 1, 1
+# SUM: zero
+# NE1: 0.0
+# NE2: 0.0
+
+NNEG1: 1+x11 >= 0, 1-x11 >= 0
+NULL1: 0 = 0
+NNEG2: 1+x21 >= 0, 1-x21 >= 0
+NULL2: 0 = 0
+
+U1: -(x11^3 + 2*x11*x21 - x21^2)
+U2: (x11^3 + 2*x11*x21 - x21^2)
+
+---
+
+# --- STEIN07 ---
+
+# ID: stein07_4_3_1
+# NAME: Correlated equilibrium game
+# REF: Stein et al. 2007
+# DIMS: 1, 1
+# SUM: general
+# NE1: 1.0
+# NE2: 1.0
+
+NNEG1: 1+x11 >= 0, 1-x11 >= 0
+NULL1: 0 = 0
+NNEG2: 1+x21 >= 0, 1-x21 >= 0
+NULL2: 0 = 0
+
+U1: 0.596*x11^2 + 2.072*x11*x21 - 0.394*x21^2 + 1.360*x11 - 1.200*x21 + 0.554
+U2: -0.108*x11^2 + 1.918*x11*x21 - 1.044*x21^2 - 1.232*x11 + 0.842*x21 - 1.886
+
+---
+
+# --- STEIN08 ---
+
+# ID: stein08_2_3
+# NAME: Separable game Example 2.3
+# REF: Stein et al. 2008
+# DIMS: 1, 1
+# SUM: general
+# NE1: -1.0
+# NE2: 0.7166
+
+NNEG1: 1+x11 >= 0, 1-x11 >= 0
+NULL1: 0 = 0
+NNEG2: 1+x21 >= 0, 1-x21 >= 0
+NULL2: 0 = 0
+
+U1: 2*x11*x21 + 3*x21^3 - 2*x11^3 - x11 - 3*x11^2*x21^2
+U2: 2*x11^2*x21^2 - 4*x21^3 - x11^2 + 4*x21 + x11^2*x21
+
+---
+
+# ID: stein08_2_4
+# NAME: Separable game Example 2.4
+# REF: Stein et al. 2008
+# DIMS: 1, 1
+# SUM: general
+# NE1: 0.0
+# NE2: 0.0
+
+NNEG1: pi^2-x11^2 >= 0
+NULL1: 0 = 0
+NNEG2: pi^2-x21^2 >= 0
+NULL2: 0 = 0
+
+U1: cos(x11-x21)
+U2: cos(x11-x21-0.5)
+
+---
+
+# ID: stein08_3_10
+# NAME: Three-player game Example 3.10
+# REF: Stein et al. 2008
+# DIMS: 1, 1, 1
+# SUM: general
+# NE1: 0.0
+# NE2: 0.0
+# NE3: 0.0
+
+NNEG1: 1-x11^2 >= 0
+NULL1: 0 = 0
+NNEG2: 1-x21^2 >= 0
+NULL2: 0 = 0
+NNEG3: 1-x31^2 >= 0
+NULL3: 0 = 0
+
+U1: 1 + 2*x11 + 3*x11^2 + 2*x21*x31 + 4*x11*x21*x31 + 6*x11^2*x21*x31 + 3*x21^2*x31^2 + 6*x11*x21^2*x31^2 + 9*x11^2*x21^2*x31^2
+U2: 7 + 2*x11 + 3*x11^2 + 2*x21 + 4*x11*x21 + 6*x11^2*x21 + 3*x31^2 + 6*x11*x31^2 + 9*x11^2*x31^2
+U3: -x31 - 2*x11*x31 - 3*x11^2*x31 - 2*x21*x31 - 4*x11*x21*x31 - 6*x11^2*x21*x31 - 3*x21*x31^2 - 6*x11*x21*x31^2 - 9*x11^2*x21*x31^2
+
+---
+
+# --- SURJANOVIC ---
+
+# ID: surjanovic_ackley
+# NAME: Ackley function
+# REF: Surjanovic & Bingham 2013
+# DIMS: 1, 1
+# SUM: zero
+# NE1: 0.0
+# NE2: 0.0
+
+NNEG1: 32.768+x11 >= 0, 32.768-x11 >= 0
+NULL1: 0 = 0
+NNEG2: 32.768+x21 >= 0, 32.768-x21 >= 0
+NULL2: 0 = 0
+
+U1: -((-20*exp(-0.2*sqrt((x11^2+x21^2)/2)) - exp((cos(2*pi*x11)+cos(2*pi*x21))/2)) + 20 + exp(1))
+U2: ((-20*exp(-0.2*sqrt((x11^2+x21^2)/2)) - exp((cos(2*pi*x11)+cos(2*pi*x21))/2)) + 20 + exp(1))
+
+---
+
+# ID: surjanovic_bohachevsky1
+# NAME: Bohachevsky function
+# REF: Surjanovic & Bingham 2013
+# DIMS: 1, 1
+# SUM: zero
+# NE1: 0.0
+# NE2: 0.0
+
+NNEG1: 100+x11 >= 0, 100-x11 >= 0
+NULL1: 0 = 0
+NNEG2: 100+x21 >= 0, 100-x21 >= 0
+NULL2: 0 = 0
+
+U1: -(0.01*(x11^2 + 2*x21^2 - 0.3*cos(3*pi*x11) - 0.4*cos(4*pi*x21) + 0.7))
+U2: (0.01*(x11^2 + 2*x21^2 - 0.3*cos(3*pi*x11) - 0.4*cos(4*pi*x21) + 0.7))
+
+---
+
+# ID: surjanovic_branin
+# NAME: Branin function
+# REF: Surjanovic & Bingham 2013
+# DIMS: 1, 1
+# SUM: zero
+# NE1: 0.0, 0.0
+# NE2: 0.0, 0.0
+
+NNEG1: 5+x11 >= 0, 10-x11 >= 0
+NULL1: 0 = 0
+NNEG2: x21 >= 0, 15-x21 >= 0
+NULL2: 0 = 0
+
+U1: -((x21 - 1.275*x11^2/pi^2 + 5*x11/pi - 6)^2 + 10*(1-1/(8*pi))*cos(x11) + 10)
+U2: ((x21 - 1.275*x11^2/pi^2 + 5*x11/pi - 6)^2 + 10*(1-1/(8*pi))*cos(x11) + 10)
+
+---
+
+# ID: surjanovic_mccormick
+# NAME: McCormick function
+# REF: Surjanovic & Bingham 2013
+# DIMS: 1, 1
+# SUM: zero
+# NE1: 0.0, 0.0
+# NE2: 0.0, 0.0
+
+NNEG1: 1.5+x11 >= 0, 4-x11 >= 0
+NULL1: 0 = 0
+NNEG2: 3+x21 >= 0, 4-x21 >= 0
+NULL2: 0 = 0
+
+U1: -(sin(x11+x21) + (x11-x21)^2 - 1.5*x11 + 2.5*x21 + 1)
+U2: (sin(x11+x21) + (x11-x21)^2 - 1.5*x11 + 2.5*x21 + 1)
+
+---
+
+# ID: surjanovic_michalewicz
+# NAME: Michalewicz function
+# REF: Surjanovic & Bingham 2013
+# DIMS: 1, 1
+# SUM: zero
+# NE1: 0.0
+# NE2: 0.0
+
+NNEG1: x11 >= 0, pi-x11 >= 0
+NULL1: 0 = 0
+NNEG2: x21 >= 0, pi-x21 >= 0
+NULL2: 0 = 0
+
+U1: -(-sin(x11)*(sin(x11^2/pi))^20 - sin(x21)*(sin(2*x21^2/pi))^20)
+U2: ((-sin(x11)*(sin(x11^2/pi))^20 - sin(x21)*(sin(2*x21^2/pi))^20))
+
+---
+
+# ID: surjanovic_rosenbrock
+# NAME: Rosenbrock function
+# REF: Surjanovic & Bingham 2013
+# DIMS: 1, 1
+# SUM: zero
+# NE1: 0.0, 0.0
+# NE2: 0.0, 0.0
+
+NNEG1: 5+x11 >= 0, 10-x11 >= 0
+NULL1: 0 = 0
+NNEG2: 5+x21 >= 0, 10-x21 >= 0
+NULL2: 0 = 0
+
+U1: -(0.0001*(100*(x21-x11^2)^2 + (x11-1)^2))
+U2: (0.0001*(100*(x21-x11^2)^2 + (x11-1)^2))
+
+---
+
+# --- YASODHARAN19 ---
+
+# ID: yasodharan19_hypothesis_test
+# NAME: Adversarial hypothesis testing
+# REF: Yasodharan & Loiseau 2019
+# DIMS: 2, 1
+# SUM: general
+# NE1: 0.5, 0.5
+# NE2: 0.5
+
+NNEG1: x11 >= 0, x12 >= 0, 1-x11 >= 0, 1-x12 >= 0
+NULL1: 0 = 0
+NNEG2: x21 >= 0, 1-x21 >= 0
+NULL2: 0 = 0
+
+U1: (x11 + x12*binomial(1,1) - 0.1*(x11+x12) - 1)
+U2: (-(x21-0.8)^2 + x11 + x12*binomial(1,1))
+
+---
+
+# --- ZHENG23 ---
+
+# ID: zheng23_convex_nonconcave
+# NAME: Minimax game (convex-nonconcave)
+# REF: Zheng 2023
+# DIMS: 1, 1
+# SUM: zero
+# NE1: 0.0
+# NE2: 0.0
+
+NNEG1: 1+x11 >= 0, 1-x11 >= 0
+NULL1: 0 = 0
+NNEG2: 1+x21 >= 0, 1-x21 >= 0
+NULL2: 0 = 0
+
+U1: -(2*x11^2 - x21^2 + 4*x11*x21 + 1.333*x21^3 - 0.25*x21^4)
+U2: (2*x11^2 - x21^2 + 4*x11*x21 + 1.333*x21^3 - 0.25*x21^4)
+
+---
+
+# ID: zheng23_kl_nonconcave
+# NAME: Minimax game (KL-nonconcave)
+# REF: Zheng 2023
+# DIMS: 1, 1
+# SUM: zero
+# NE1: 0.0
+# NE2: 0.0
+
+NNEG1: 1+x11 >= 0, 1-x11 >= 0
+NULL1: 0 = 0
+NNEG2: 1+x21 >= 0, 1-x21 >= 0
+NULL2: 0 = 0
+
+U1: -(x11^2 + 3*sin(x11)^2*sin(x21)^2 - 4*x21^2 - 10*sin(x21)^2)
+U2: (x11^2 + 3*sin(x11)^2*sin(x21)^2 - 4*x21^2 - 10*sin(x21)^2)
+
+---
+
+# ID: zheng23_bilinearly_coupled_minimax
+# NAME: Minimax game (bilinearly coupled)
+# REF: Zheng 2023
+# DIMS: 1, 1
+# SUM: zero
+# NE1: 0.0
+# NE2: 0.0
+
+NNEG1: 4+x11 >= 0, 4-x11 >= 0
+NULL1: 0 = 0
+NNEG2: 4+x21 >= 0, 4-x21 >= 0
+NULL2: 0 = 0
+
+U1: -((x11+1)*(x11-1)*(x11+3)*(x11-3) + 10*x11*x21 - (x21+1)*(x21-1)*(x21+3)*(x21-3))
+U2: ((x11+1)*(x11-1)*(x11+3)*(x11-3) + 10*x11*x21 - (x21+1)*(x21-1)*(x21+3)*(x21-3))
+
+---
+
+# ID: zheng23_forsaken
+# NAME: Minimax game (forsaken)
+# REF: Zheng 2023
+# DIMS: 1, 1
+# SUM: zero
+# NE1: 0.0
+# NE2: 0.0
+
+NNEG1: 1.5+x11 >= 0, 1.5-x11 >= 0
+NULL1: 0 = 0
+NNEG2: 1.5+x21 >= 0, 1.5-x21 >= 0
+NULL2: 0 = 0
+
+U1: -(x11*(x21-0.45) + 0.25*x11^2 - 0.5*x11^4 + 0.1667*x11^6 - 0.25*x21^2 + 0.5*x21^4 - 0.1667*x21^6)
+U2: (x11*(x21-0.45) + 0.25*x11^2 - 0.5*x11^4 + 0.1667*x11^6 - 0.25*x21^2 + 0.5*x21^4 - 0.1667*x21^6)
+
+---
+
+# --- ZHOU20 ---
+
+# ID: zhou20_5_3_i
+# NAME: Zhou rational game (Example 5.3 i)
+# REF: Zhou et al. 2020
+# DIMS: 2, 2
+# SUM: zero
+# NE1: 0.0002, 0.0002
+# NE2: 0.0002, 0.0002
+
+NNEG1: 1-x11 >= 0, 1-x12 >= 0, x11 >= 0, x12 >= 0
+NULL1: 0 = 0
+NNEG2: 1-x21 >= 0, 1-x22 >= 0, x21 >= 0, x22 >= 0
+NULL2: 0 = 0
+
+U1: -((x11^2 + x12^2 - x21^2 - x22^2) / (x11 + x22 + 1))
+U2: ((x11^2 + x12^2 - x21^2 - x22^2) / (x11 + x22 + 1))
+
+---
+
+# ID: zhou20_5_3_ii
+# NAME: Zhou rational game (Example 5.3 ii)
+# REF: Zhou et al. 2020
+# DIMS: 3, 3
+# SUM: zero
+# NE1: 0.0, 0.0, 0.0
+# NE2: 0.0, 0.0, 0.0
+
+NNEG1: 1-x11 >= 0, 1-x12 >= 0, 1-x13 >= 0, x11 >= 0, x12 >= 0, x13 >= 0
+NULL1: 0 = 0
+NNEG2: 1-x21 >= 0, 1-x22 >= 0, 1-x23 >= 0, x21 >= 0, x22 >= 0, x23 >= 0
+NULL2: 0 = 0
+
+U1: -((x11 + x12 + x13 + x21 + x22 + x23 + x11^2*x22^2 - x21^2*x12^2 + x11^2*x23^2 - x21^2*x13^2 + x12^2*x23^2 - x22^2*x13^2) / (x11^2 + x22^2 + x13*x23 + 1))
+U2: ((x11 + x12 + x13 + x21 + x22 + x23 + x11^2*x22^2 - x21^2*x12^2 + x11^2*x23^2 - x21^2*x13^2 + x12^2*x23^2 - x22^2*x13^2) / (x11^2 + x22^2 + x13*x23 + 1))

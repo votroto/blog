@@ -1,0 +1,31 @@
+---
+layout: default
+---
+
+<div id="main-content">
+
+
+	<h1>About Me</h1>
+		<div class="links-list">
+		{% for link in page.links %}
+			{%- if link.important == true -%}
+			<a href="{{ link.url }}" class="link-important">{{ link.title }}</a>
+			{%- else -%}
+			<a href="{{ link.url }}" class="link-item">{{ link.title }}</a>
+			{%- endif -%}
+		{% endfor %}
+	</div>
+	<div class="about-card post-card">
+		<div class="post-link">
+			<div class="post-left">
+				<h2>Tomáš Votroubek</h2>
+				<p class="excerpt">{{ page.aboutme }}</p>
+
+			</div>
+			<div class="post-right"><img alt="post cover image" src="{{site.assets}}/assets/img/portrait.avif" /></div>
+		</div>
+	</div>
+
+
+	{{ content }}
+</div>

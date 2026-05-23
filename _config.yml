@@ -3,5 +3,10 @@ author:
   name: Tomáš Votroubek
 url: "votroto.github.io"
 
+assets: "https://res.cloudinary.com/dwpwjhnoc/image/upload/votroto/"
+
 include:
  - _pages
+
+kramdown:
+  math_engine: katex

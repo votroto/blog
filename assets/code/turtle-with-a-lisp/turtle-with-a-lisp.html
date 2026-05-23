@@ -7,10 +7,13 @@
   <script type="text/javascript" src="turtle.js"></script>
 
   <style>
-    :root {
-      color-scheme: dark;
-    }
+    :root{ color-scheme: dark; }
 
+    @media (prefers-color-scheme: light) {
+      .invertible {
+        filter: invert() hue-rotate(180deg);
+      }
+    }
     html,
     body {
       box-sizing: border-box;
@@ -31,7 +34,7 @@
     }
 
     #turtle-expression {
-      color: white;
+      color: var(--body-color-fg);
       position: absolute;
       bottom: 1em;
       left: 50%;
@@ -47,8 +50,8 @@
 </head>
 
 <body>
-  <canvas id="turtle-canvas"></canvas>
-  <textarea id="turtle-expression" rows="6"></textarea>
+  <canvas id="turtle-canvas" class="invertible"></canvas>
+  <textarea id="turtle-expression" rows="6" class="invertible"></textarea>
 </body>
 
 </html>
