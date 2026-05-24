@@ -1,0 +1,15 @@
+{% assign thumb = site.assets | append: include.folder | append: '/thumb/' | append: include.file %}
+{% assign large = site.assets | append: include.folder | append: '/small/' | append: include.file %}
+{% assign image_id = large | md5 %}
+
+<button class="thumb" popovertarget="img{{ image_id }}">
+  <img src="{{ thumb }}">
+</button>
+
+<div id="img{{ image_id }}" popover>
+  <button class="backdrop-close" popovertarget="img{{ image_id }}" popovertargetaction="hide"></button>
+  <div class="viewer">
+    <button class="close-btn" popovertarget="img{{ image_id }}" popovertargetaction="hide">×</button>
+    <img src="{{ large }}" loading="lazy">
+  </div>
+</div>
