@@ -2,8 +2,10 @@
 layout: text
 permalink: /thesis
 title: "Algorithms and Iterative methods for infinite games"
-subtitle: "Global Optimization in Game Theory and Beyond"
 ---
+
+# Algorithms and Iterative methods for infinite games
+## Global Optimization in Game Theory and Beyond
 
 <a href="{{ site.assets }}/assets/pdf/dizertace.pdf" class="link-important">Download Thesis</a>
 <a href="{{ site.assets }}/assets/pdf/dizertace.pdf" class="link-item link-text">View Source</a>
