@@ -20,7 +20,7 @@ Below is a list of our published results mostly concerning the applications of g
 
    > Tomáš Votroubek and Tomáš Kroupa. IEEE Robotics and Automation Letters, 9(6):5998–6003, 2024.
 
-We develop a bilinear lifting scheme for polynomial inverse kinematics with possible applications to manipulator design, enabling the computation of globally optimal solutions for generic manipulators with up to 10 degrees of freedom. Our scheme substantially improves upon the results of Trutman et al. [90], who demonstrated that inverse kinematics with 7 degrees of freedom are solvable using a method based on algebraic geometry.
+We develop a bilinear lifting scheme for polynomial inverse kinematics with possible applications to manipulator design, enabling the computation of globally optimal solutions for generic manipulators with up to 10 degrees of freedom. Our scheme substantially improves upon the results of Trutman et al., who demonstrated that inverse kinematics with 7 degrees of freedom are solvable using a method based on algebraic geometry.
 
 Relevant Julia source code is published as the [IK.jl](https://github.com/votroto/IK.jl) package.
 
