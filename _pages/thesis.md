@@ -12,7 +12,7 @@ title: "Algorithms and Iterative methods for infinite games"
 
 
 **Acknowledgements**
-*I would like to thank to Victor Magron for his thorough review of the original draft of my thesis. His comments and suggestions are now a part of this online edition.*
+*I would like to thank to Victor Magron and Milan Hladík for their thorough reviews of the original draft of my thesis. Their comments and suggestions are now a part of this online edition.*
 
 ## Contributions and Thesis Structure
 
