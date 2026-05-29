@@ -8,7 +8,7 @@ title: "Algorithms and Iterative methods for infinite games"
 ## Global Optimization in Game Theory and Beyond
 
 <a href="{{ site.assets }}/assets/pdf/dizertace.pdf" class="link-important">Download Thesis</a>
-<a href="github.com/votroto/disertation" class="link-item link-text">View Source</a>
+<a href="https://github.com/votroto/disertation" class="link-item link-text">View Source</a>
 
 
 **Acknowledgements**
@@ -23,10 +23,10 @@ zero-sum continuous games.
 
 Relevant Julia source code is published as [DoubleQuack.jl](https://github.com/votroto/DoubleQuack.jl) (the fully general multiplayer version *Quack* is work-in-progress).
 
-Optimal Inverse Kinematics In Chapter 4, we develop a bilinear lifting scheme for polynomial inverse kinematics with possible applications to manipulator design, enabling the computation of globally optimal solutions for generic manipulators with up to 10 degrees of freedom. Our scheme substantially improves upon the results of Trutman et al., who demon strated that inverse kinematics with 7 degrees of freedom are solvable using a method based on algebraic geometry.
+Optimal Inverse Kinematics In Chapter 4, we develop a bilinear lifting scheme for polynomial inverse kinematics with possible applications to manipulator design, enabling the computation of globally optimal solutions for generic manipulators with up to 10 degrees of freedom. Our scheme substantially improves upon the results of Trutman et al., who demonstrated that inverse kinematics with 7 degrees of freedom are solvable using a method based on algebraic geometry.
 
 Relevant Julia source code is published as the [IK.jl](https://github.com/votroto/IK.jl) package.
 
-Nash Equilibria in Separable Network Games We provide an infinite-dimensional linear program and a Moment–Sum-of-Squares hierarchy for Nash equilibria in polynomial separable network games in Section 3.2. See Theorem 5, and Examples 3 and 4. Our infinite-dimensional linear program for continuous network games is a generali- sation of the linear program by Cai et al. originally applicable to games with finite action spaces.
+Nash Equilibria in Separable Network Games We provide an infinite-dimensional linear program and a Moment–Sum-of-Squares hierarchy for Nash equilibria in polynomial separable network games in Section 3.2. See Theorem 5, and Examples 3 and 4. Our infinite-dimensional linear program for continuous network games is a generalisation of the linear program by Cai et al. originally applicable to games with finite action spaces.
 
 List of Continuous Games Appendix A contains our curated and standardised library of continuous-game benchmarks

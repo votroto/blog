@@ -8,13 +8,13 @@ img: "/assets/img/games.svg"
 ---
 
 
-We present a compilation of parametrized continous games drawn from both recent and classical literature. Analogous to the [Gamut](https://dl.acm.org/doi/10.5555/1018410.1018840) test set of finite games, our suite should provide a convincing and comprehensive benchmark for continous-game solvers. Specifically, we compiled multiplayer games with continuous utility functions and compact strategy sets and, where possible, with known equilibria.
+We present a compilation of parametrized continuous games drawn from both recent and classical literature. Analogous to the [Gamut](https://dl.acm.org/doi/10.5555/1018410.1018840) test set of finite games, our suite should provide a convincing and comprehensive benchmark for continuous-game solvers. Specifically, we compiled multiplayer games with continuous utility functions and compact strategy sets and, where possible, with known equilibria.
 
 ![Game table]({{ site.assets }}/assets/img/gametable.png){: .invertible }
 
 ## Standardization
 
-Players are identified by successive natural numbers $$1,2,\dots$$, while their variables are named consistently by $$x$$ followed by two indices indicating the controling player first and the variable number second. For example, variable `3` of player `4` is refered to as $$x_{34}$$.
+Players are identified by successive natural numbers $$1,2,\dots$$, while their variables are named consistently by $$x$$ followed by two indices indicating the controlling player first and the variable number second. For example, variable `3` of player `4` is referred to as $$x_{34}$$.
 
 <figure>
 <figcaption markdown="1">
@@ -37,7 +37,7 @@ The game has an equilibrium at $$x^\star=(0,0)$$.
 </figure>
 
 
-Note that continuous games are complicated, and one game may have many representations. A strategy set as simple as $$z\in[-1,1]$$ may also be writen as $$z^2\le1$$ or $$(-1\ge z \land z \le1)$$, with all three having potentially different implementations in your solver.
+Note that continuous games are complicated, and one game may have many representations. A strategy set as simple as $$z\in[-1,1]$$ may also be written as $$z^2\le1$$ or $$(-1\ge z \land z \le1)$$, with all three having potentially different implementations in your solver.
 
 In addition to the game description in a canonical format we also provide a simple and reusable format, where we formulate the constraints for each player in terms of *non-negative* and *equal-to-zero* relations. The incentives of players are described by *utility* functions. In our simplified format the Tangent Ridge game is equivalent to:
 

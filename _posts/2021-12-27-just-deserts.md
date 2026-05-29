@@ -6,7 +6,6 @@ excerpt: "A group of friends has baked a cake, and now they are looking to share
 hero: "/assets/code/just-deserts.html"
 tag: "Game Theory"
 img: "/assets/img/core.svg"
-#imgstyle: "background: linear-gradient(-45deg, #161515, #1c1e2c)"
 ---
 
 A group of friends has baked a cake and are now looking to share it. How should they do that? Let's start with a couple of obvious requirements: feasibility --- they can't split more than the entire cake; efficiency --- if everyone is happy to switch to a different division, and some players strictly prefer it, they should pick that division instead. In particular, they ought not to throw any of the cake away.
@@ -15,7 +14,7 @@ A group of friends has baked a cake and are now looking to share it. How should 
 
 Efficient allocations are our first solution concept called pre-imputations (the faint hyperplane hatched in green). But is that enough? What if some of the friends' slices end up being smaller than what they could get by themselves? The group better look for individually-rational concepts that entice individuals to cooperate, which is precisely what *imputations* are (the whole blue triangle).
 
-While taking the largest slice that leaves no room for complaints from individuals may be tempting, such behavior might result in not getting invited next time --- the group might break up into sub-coalitions. By strengthening the concept again to only coalitionaly-rational allocations, we get a fundamental set called the *core* (highlighted in beige). As long as they pick a division out of the core, it will be in everyone's best interest to cooperate, but which allocation should they choose?
+While taking the largest slice that leaves no room for complaints from individuals may be tempting, such behavior might result in not getting invited next time --- the group might break up into sub-coalitions. By strengthening the concept again to only coalitionally-rational allocations, we get a fundamental set called the *core* (highlighted in beige). As long as they pick a division out of the core, it will be in everyone's best interest to cooperate, but which allocation should they choose?
 
 ## Fairness
 

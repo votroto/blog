@@ -19,7 +19,9 @@ title: Posts
 						<p class="excerpt">{{ post.excerpt }}</p>
 						<span class="post-meta">{{ post.date | date: date_format }}</span>
 					</div>
-					<div class="post-right"><img class="invertible" alt="post cover image" src="{{ site.assets }}{{ post.img }}"/></div>
+					<div class="post-right">
+						<img class="invertible" alt="post cover image" src="{{ site.assets }}{{ post.img }}"/>
+					</div>
 				</a>
 			</li>
 			{%- endif -%}
