@@ -39,11 +39,11 @@ My [current research](/papers) focuses on practical algorithms for solving conti
 
 In my [thesis](/thesis), I demonstrate the practicality of our recent Multiple Oracle method with a proof-of-concept implementation, by successfully solving games compiled from both recent and classical literature, which we have published as a [dataset](/2026/05/04/a-list-of-games.html). We have also applied the same powerful optimization techniques in robotics, resulting in our follow-up paper on globally optimal inverse kinematics, where we demonstrated that an earlier technique could be extended from 7 to 10 degrees of freedom.
 
-My long-term interest lies in developing practical algorithms for non-convex optimization, especially a specialized semidefinite solver that exploits the structure of matrices in Lasserre hierarchies. I believe that the general-purpose nature of current semidefinite solvers is a major bottleneck in Moment-SOS hierarchies today. While exploiting the structure and sparsity of the input polynomials is an area of active research and projects such as [TSSOS](https://github.com/wangjie212/TSSOS), the pre-solved problems should be solved by solvers that are efficient themselves. If semidefinite solvers are too niche for the industry, I would be interested in developing the next generation myself.
+My long-term interest lies in developing practical algorithms for non-convex optimization, especially a specialized semidefinite solver that exploits the structure of matrices in Lasserre hierarchies. I believe that the general-purpose nature of current semidefinite solvers is a major bottleneck in Moment-SOS hierarchies today. While exploiting the structure and sparsity of the input polynomials is an area of active research and projects such as [TSSOS](https://github.com/wangjie212/TSSOS), the pre-solved problems should be solved by solvers that are efficient themselves. If such semidefinite solvers are too niche for the industry, I would be interested in developing the next generation myself.
 
 ## Experience
 
-I have shipped software for Linux, Windows, and Android, written in C++, Java, JavaScript, and Python, along with the obvious host of other supporting tools such as Bash, SQLite, etc. In my current job, I mainly write Julia and Python, with occasional Haskell and Scheme, but I know others and am willing to learn.
+I have shipped software for Linux, Windows, and Android, written in C++, Java, JavaScript, and Python, along with the obvious host of other supporting tools such as Bash, SQLite, etc. At my current job, I mainly write Julia and Python, with the occasional Haskell and Scheme, but I know others and am willing to learn.
 
 <details>
   <summary>Other languages </summary>

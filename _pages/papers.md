@@ -10,9 +10,13 @@ Below is a list of our published results mostly concerning the applications of g
 
 [View on ORCID](https://orcid.org/0000-0001-6781-5560){: .link-important}
 
-<!--## Preprints
+## Preprints
 
-- StayOnTheRidge-->
+#### [STON'R Converges to First-Order Nash Equilibria of Multiplayer Games](https://arxiv.org/abs/2606.09565)
+
+   > Marika Kosohorská, Tomáš Kroupa, Tomáš Votroubek. arXiv, 2026.
+
+Daskalakis et al. introduced the STON'R algorithm for solving variational inequality problems and established convergence under smoothness assumptions. They further showed that the algorithm's limit points correspond to equilibria in specific classes of games, namely local minimax equilibria in two-player zero-sum games and Nash equilibria in concave games. In this work, we extend the convergence result to multiplayer general-sum games and show that the variational inequality solutions targeted by STON'R correspond to first-order Nash equilibria (FONE), a general game-theoretic solution concept that unifies these previously studied cases.
 
 ## Published
 
