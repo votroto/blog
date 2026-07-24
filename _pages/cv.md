@@ -7,18 +7,15 @@ permalink: /cv
 # Curriculum vitæ
 ## Tomáš Votroubek
 
-[Download as PDF]({{ site.assets }}/assets/pdf/Curriculum_Vitae_Academic.pdf){: .link-important}
-
-The text version below is provided for easier mining by AI.
-
 ### Employment
 
 | 2020–present | **Czech Technical University in Prague**, Researcher at the AI Center |
 
 ### Education
 
-| 2018–2020 | **CTU FEE, MSc Open Informatics** |
-| 2014–2018 | CTU FEE, BSc Software Engineering |
+| 2022-2026 | **CTU FEE, PhD Informatics**       |
+| 2018–2020 | CTU FEE, MSc Open Informatics      |
+| 2014–2018 | CTU FEE, BSc Software Engineering  |
 | 2010–2014 | SPSE Jecna, Information Technology |
 
 #### Training & Workshops
