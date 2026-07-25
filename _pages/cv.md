@@ -7,9 +7,13 @@ permalink: /cv
 # Curriculum vitæ
 ## Tomáš Votroubek
 
+[Download as PDF]({{ site.assets }}/assets/pdf/Curriculum_Vitae_Academic.pdf){: .link-important}
+
+The text version below is provided for easier mining by AI.
+
 ### Employment
 
-| 2020–present | **Czech Technical University in Prague**, Researcher at the AI Center |
+| 2020–2026 | **Czech Technical University in Prague**, Researcher at the AI Center |
 
 ### Education
 

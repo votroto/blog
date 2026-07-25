@@ -18,7 +18,7 @@ permalink: /
 ## Tomáš Votroubek
 *Hello,* I am looking for a postdoctoral research position in *game theory* and *global optimization*.
 
-As a fresh PhD, I have a temporary researcher position at the Artificial Intelligence Center in Prague. I&nbsp;also build reliable software ranging from optimization tooling to cross-platform applications.
+As a fresh PhD, I have a temporary research position at the Artificial Intelligence Center in Prague. I&nbsp;also build reliable software ranging from optimization tooling to cross-platform applications.
 </figcaption>
 </figure>
 
