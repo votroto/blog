@@ -16,11 +16,11 @@ permalink: /
 <img class="portrait" src="{{site.assets}}/assets/img/presentation.avif" alt="Portrait"/>
 <figcaption markdown="1" class="larger-caption">
 ## Tomáš Votroubek
-*Hello,* I am looking for a postdoctoral research position in *game theory* and *global optimization*.
-
-As a fresh PhD, I have a temporary research position at the Artificial Intelligence Center in Prague. I&nbsp;also build reliable software ranging from optimization tooling to cross-platform applications.
+*Hello,* I am a researcher at the Artificial Intelligence Center in Prague, working on *game theory* and *global optimization*. Alongside research, I build reliable software systems ranging from optimization tooling and scientific infrastructure to embedded and cross-platform applications.
 </figcaption>
 </figure>
+
+I am currently looking for a postdoctoral research position.
 
 ## Interests
 
